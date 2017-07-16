@@ -101,6 +101,11 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="arkitect.extension.starter";
 
+//packages arkitect.extension.mirror
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="arkitect.extension.mirror";
+
 
 
 
@@ -282,6 +287,13 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.codeloader.phpclass";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+
+//CONNECTOR INSTANCIATOR EXTENDED (for driver auto instanciation)
+//packages connector.instanciatorextended
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.instanciatorextended";
 
 
 //CONNECTOR CONF
@@ -773,7 +785,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.multisite";
 //packages report
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.other.highcharts";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.graph.highcharts";
 
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
