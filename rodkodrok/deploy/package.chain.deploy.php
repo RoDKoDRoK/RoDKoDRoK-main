@@ -122,6 +122,18 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.dump.mysql";
 
 
+//packages user
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.user.nouser";
+
+
+//packages token
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.token.notoken";
+
+
 
 
 //PRATIK
@@ -241,6 +253,17 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.db";
 
 //PACKAGES AFTER DB !!!
 
+//USER
+//packages user to integrate before connector.user
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.user.roduser";
+
+//packages connector.user
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.user";
+
 //DROIT
 //packages access to integrate before connector.droit
 $tabpackagetodeploy[]=array();
@@ -253,6 +276,18 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.droit";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//USER TOKEN
+//packages token to integrate before connector.token
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.token.rodtoken";
+
+//packages connector.token
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.token";
+
 
 
 
@@ -276,7 +311,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratiklib.case.login"
 
 
 
-//USER
+//USER INTERFACE (and token to kill later ? )
 //packages user and token
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";

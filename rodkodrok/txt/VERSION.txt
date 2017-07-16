@@ -1,1 +1,1 @@
-RoDKoDRoK - The Content and Server Management Framework - V 0.0.2
+RoDKoDRoK - The Content and Server Management Framework - V 0.0.3

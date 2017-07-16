@@ -131,6 +131,9 @@ class Deploy
 	{
 		$returned="";
 		
+		$descripter['name']="";
+		$descripter['description']="";
+		
 		if(file_exists("package/".$deploypage."/package.descripter.php"))
 			include_once "package/".$deploypage."/package.descripter.php";
 		
