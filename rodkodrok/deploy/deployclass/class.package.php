@@ -212,6 +212,15 @@ class PratikPackage extends ClassIniter
 					}
 			}
 			
+			
+			//reconstruct initer with last files deploy
+			if(class_exists("PratikInitersimul") || (isset($this->includer) && $this->includer->include_pratikclass("Initersimul")))
+			{
+				$instanceInitersimul=new PratikInitersimul($this->initer);
+				$newiniter=$instanceInitersimul->initerConstruct($this->initer);
+				$this->reloadIniter($newiniter);
+			}
+			
 			//include postdeployer static
 			if(file_exists("package/".$packagecodename."/static/static.postdeployer.php"))
 				include "package/".$packagecodename."/static/static.postdeployer.php";
@@ -450,6 +459,13 @@ class PratikPackage extends ClassIniter
 			}
 			
 			
+			//reconstruct initer with last files deploy
+			if(class_exists("PratikInitersimul") || (isset($this->includer) && $this->includer->include_pratikclass("Initersimul")))
+			{
+				$instanceInitersimul=new PratikInitersimul($this->initer);
+				$newiniter=$instanceInitersimul->initerConstruct($this->initer);
+				$this->reloadIniter($newiniter);
+			}
 			
 			//include postdeployer generator
 			if(file_exists("package/".$packagecodename."/generator/generator.postdeployer.php"))
@@ -662,7 +678,6 @@ class PratikPackage extends ClassIniter
 						}
 					}
 			}
-			
 			
 				
 			//include postdestroyer static
@@ -890,7 +905,6 @@ class PratikPackage extends ClassIniter
 						
 					}
 			}
-			
 			
 				
 			//include postdestroyer generator
@@ -1556,6 +1570,15 @@ class PratikPackage extends ClassIniter
 					}
 			}
 			
+			
+			//reconstruct initer with last files deploy
+			if(class_exists("PratikInitersimul") || (isset($this->includer) && $this->includer->include_pratikclass("Initersimul")))
+			{
+				$instanceInitersimul=new PratikInitersimul($this->initer);
+				$newiniter=$instanceInitersimul->initerConstruct($this->initer);
+				$this->reloadIniter($newiniter);
+			}
+			
 			//include postdeployer static
 			if(file_exists("package/".$packagecodename."/static/static.postdeployer.php"))
 				include "package/".$packagecodename."/static/static.postdeployer.php";
@@ -1932,6 +1955,13 @@ class PratikPackage extends ClassIniter
 			}
 			
 			
+			//reconstruct initer with last files deploy
+			if(class_exists("PratikInitersimul") || (isset($this->includer) && $this->includer->include_pratikclass("Initersimul")))
+			{
+				$instanceInitersimul=new PratikInitersimul($this->initer);
+				$newiniter=$instanceInitersimul->initerConstruct($this->initer);
+				$this->reloadIniter($newiniter);
+			}
 			
 			//include postdeployer generator
 			if(file_exists("package/".$packagecodename."/generator/generator.postdeployer.php"))

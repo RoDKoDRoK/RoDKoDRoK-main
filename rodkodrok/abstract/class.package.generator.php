@@ -105,7 +105,7 @@ class PackageGenerator extends ClassIniter
 			return $tabdatacour;
 		}
 		
-		return utf8_decode(str_replace('@@@','\n',eval("return \"".str_replace('\n','@@@',str_replace('"','&quot;',(string)$chaine)."\";"))));
+		return @utf8_decode(str_replace('@@@','\n',eval("return \"".str_replace('\n','@@@',str_replace('"','&quot;',(string)$chaine)."\";"))));
 	}
 	
 

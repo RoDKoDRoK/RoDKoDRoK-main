@@ -3,8 +3,15 @@
 //session
 session_start();
 
+//check if config php ok
+ini_set('memory_limit', '128M');
+ini_set('post_max_size', '128M');
+ini_set('upload_max_filesize', '128M');
+
+
 //to kill en mode prod
 ini_set('display_errors', 1);
+error_reporting(E_ALL & ~E_NOTICE);
 //error_reporting(e_all);
 
 

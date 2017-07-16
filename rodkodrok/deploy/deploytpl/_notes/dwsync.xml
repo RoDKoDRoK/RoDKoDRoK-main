@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="conf.form.tpl" server="emma.ia.defensecdd.gouv.fr//var/www/rod/" local="130833754898420921" remote="131116733250000000" Dst="2" />
+<file name="deploy.tpl" server="emma.ia.defensecdd.gouv.fr//var/www/rod/" local="130835570555741059" remote="131116733250000000" Dst="2" />
+<file name="deployment.tpl" server="emma.ia.defensecdd.gouv.fr//var/www/rod/" local="130714146060000000" remote="131116733250000000" Dst="2" />
+<file name="downloadstep.tpl" server="emma.ia.defensecdd.gouv.fr//var/www/rod/" local="130835598623218749" remote="131116733250000000" Dst="2" />
+<file name="generator.tpl" server="emma.ia.defensecdd.gouv.fr//var/www/rod/" local="130820462465724174" remote="131116733250000000" Dst="2" />
+<file name="startdeploy.tpl" server="emma.ia.defensecdd.gouv.fr//var/www/rod/" local="130808671913596966" remote="131116733250000000" Dst="2" />
+</dwsync>

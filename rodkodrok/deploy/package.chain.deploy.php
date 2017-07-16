@@ -74,6 +74,10 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.db.mysql";
 
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.db.mysqli";
+
 
 //packages log
 $tabpackagetodeploy[]=array();
@@ -188,6 +192,11 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.downloader";
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.dump";
+
+//package initersimul
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.initersimul";
 
 
 
@@ -468,13 +477,13 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.package";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 /*
-//WORK IN PROGRESS
 //packages packager
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.packager";
 
-
+/*
+//TODO
 //packages mirror
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -484,8 +493,9 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.mirror";
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.shareonrkrportal";
-
-
+//...
+*/
+/*
 //packages deployer
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
