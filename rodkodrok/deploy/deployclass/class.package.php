@@ -2101,27 +2101,73 @@ class PratikPackage extends ClassIniter
 		//check package to update
 		$downloader=null;
 		$yourfile="core/files/packagezip/".$packagecodename.".zip";
-		if(file_exists($yourfile))
+		//cas aucune présence du package, pas d'update
+		if(!file_exists($yourfile))
+			if(!file_exists("package/".$packagecodename))
+				return false;
+		
+		//downloader init
+		if($downloader==null && $this->includer->include_pratikclass("Downloader"))
+			$downloader=new PratikDownloader($this->initer);
+		
+		//data distant file
+		$distantfilesize="";
+		if($downloader && ($distantfile=$downloader->getFileLink($packagecodename.".zip","packages"))!="")
 		{
-			//downloader init
-			if($downloader==null && $this->includer->include_pratikclass("Downloader"))
-				$downloader=new PratikDownloader($this->initer);
-			
-			//data distant file
-			$distantfilesize="";
-			if($downloader && ($distantfile=$downloader->getFileLink($packagecodename.".zip","packages"))!="")
-			{
-				$head = array_change_key_case(get_headers($distantfile, TRUE));
-				$distantfilesize = $head['content-length'];
-			}
-			
-			//data your file
-			$yourfilesize=filesize($yourfile);
-			
-			//compare to show update or not
-			if($distantfilesize!="" && $yourfilesize!=$distantfilesize)
-				return true;
+			$head = array_change_key_case(get_headers($distantfile, TRUE));
+			$distantfilesize = $head['content-length'];
 		}
+		//when distant file not exists
+		if($distantfilesize=="")
+			return false;
+		
+		//cas zip package inexistant, update necessaire
+		if(!file_exists($yourfile))
+			if(file_exists("package/".$packagecodename))
+				return true;
+		
+		//data your file
+		$yourfilesize=filesize($yourfile);
+		
+		//compare to show update or not
+		if($yourfilesize!=$distantfilesize)
+			return true;
+		
+		return false;
+	}
+	
+	
+	
+	function checkLocalUpdate($packagecodename="example")
+	{
+		//to check a local update, change the version of your package in the descripter
+		//get descripter version (new version)
+		$descripterversion="";
+		$descripterfile="package/".$packagecodename."/package.descripter.php";
+		if(!file_exists($descripterfile))
+			return false;
+		
+		include $descripterfile;
+		if(isset($descripter['version']) && $descripter['version']!="")
+			$descripterversion=$descripter['version'];
+		
+		if($descripterversion=="")
+			return false;
+		
+		//get db version (deployed version)
+		$dbversion="";
+		if(!(isset($this->db) && $this->db))
+			return false;
+		
+		$res=$this->db->query_one_result("select * from `package` where nomcodepackage='".$packagecodename."'");
+		if(isset($res['version']) && $res['version']!="")
+			$dbversion=$res['version'];
+		
+		if($dbversion=="")
+			return false;
+		
+		if($dbversion!=$descripterversion)
+			return true;
 		
 		return false;
 	}
