@@ -409,6 +409,11 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.db";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
+//packages connector.requestor
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.requestor";
+
 //... DB MAIN DEPLOYMENT !!!
 
 

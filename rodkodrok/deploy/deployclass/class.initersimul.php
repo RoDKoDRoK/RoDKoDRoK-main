@@ -73,6 +73,26 @@ class PratikInitersimul extends ClassIniter
 				}
 		}
 		
+		//load classes abstract manquantes
+		$tab_chemin_abstract=array("core/src/abstract");
+		foreach($tab_chemin_abstract as $chemin_abstract)
+		{
+			$tab_class=$loader->charg_dossier_dans_tab($chemin_abstract);
+			if(!$tab_class)
+				continue;
+			
+			sort($tab_class);
+			//print_r($tab_class);
+			foreach($tab_class as $class_to_load)
+			{
+				//check already loaded in deploy
+				$filenameabstract=substr($class_to_load,strrpos($class_to_load,"/"));
+				if(file_exists("deploy/deployabstract".$filenameabstract))
+					continue;
+				
+				include_once $class_to_load;
+			}
+		}
 		
 		//get chain connector
 		$chainconnector="none";
