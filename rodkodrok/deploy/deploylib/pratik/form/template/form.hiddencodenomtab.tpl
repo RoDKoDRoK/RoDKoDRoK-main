@@ -1,0 +1,1 @@
+<input type="hidden" name="codename" value="{literal}{$data[cptdata].codename}{/literal}" />

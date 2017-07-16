@@ -1,0 +1,1 @@
+<input type="button" name="deployconf" value="Deploy" onclick="ajaxCall('widewindow','packageconf','packagecodename={$packagecodename}')" />

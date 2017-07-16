@@ -1,0 +1,1 @@
+<input type="button" name="destroyconf" value="Destroy" onclick="windowCall('widewindow','packageconf','deployed=1&packagecodename={literal}{$data[cptdata].nomcodepackage}{/literal}')" />

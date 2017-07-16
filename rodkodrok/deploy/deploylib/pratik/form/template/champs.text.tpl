@@ -1,0 +1,1 @@
+<input type="text" name="{$lineform.name}" value="{$lineform.default}" />

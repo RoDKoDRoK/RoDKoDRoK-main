@@ -1,0 +1,22 @@
+Créateur de RoDKoDRoK - The Content and Server Management Framework
+______________________________________________________
+
+Rodolphe Boury : rodolpheboury@gmail.com
+
+
+
+Principaux co-développeurs du core
+______________________________________________________
+
+ - 
+
+
+Développeurs référents par package (les principaux packages)
+______________________________________________________
+
+ - 
+
+
+
+
+

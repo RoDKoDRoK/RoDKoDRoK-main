@@ -1,0 +1,1 @@
+<input type="hidden" name="{$lineform.name}" value="{$lineform.default}" />

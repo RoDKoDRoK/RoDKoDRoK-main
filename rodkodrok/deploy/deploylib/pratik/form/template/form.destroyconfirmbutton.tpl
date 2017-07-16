@@ -1,0 +1,1 @@
+<input type="submit" name="destroysubmit" value="Destroy" />
