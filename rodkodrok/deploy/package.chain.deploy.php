@@ -75,13 +75,12 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal";
 
 
 //ABSTRACT ONLY
-/*
 //PRATIK STARTER
 //packages abstract.pratik
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.pratik";
-*/
+
 //TASK STARTER
 //packages abstract.task
 $tabpackagetodeploy[]=array();
