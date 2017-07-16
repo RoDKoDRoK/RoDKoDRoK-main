@@ -21,6 +21,24 @@ if(isset($_GET['chainconnector']) && $_GET['chainconnector']!="")
 	$chainconnector=$_GET['chainconnector'];
 
 
+//load genesis
+$genesisdbfromfile=null;
+$requestor=null;
+$chemin_genesis="rkrsystem/src/genesis";
+if(file_exists($chemin_genesis."/genesis.rkrdatasrc.php"))
+	include $chemin_genesis."/genesis.rkrdatasrc.php";
+if(file_exists($chemin_genesis."/genesis.dbfromfile.php"))
+{
+	include $chemin_genesis."/genesis.dbfromfile.php";
+	$genesisdbfromfile=new DbFromFile();
+	if(file_exists($chemin_genesis."/genesis.requestor.php"))
+	{
+		include_once $chemin_genesis."/genesis.requestor.php";
+		$requestor=new Requestor($genesisdbfromfile);
+	}
+}
+
+
 //load ark
 $chemin_ark="core/src/ark";
 if(file_exists($chemin_ark."/arkchain.php"))
@@ -28,6 +46,12 @@ if(file_exists($chemin_ark."/arkchain.php"))
 for($i=1;$i<=20;$i++)
 	if(file_exists($chemin_ark."/arkchain.".$i.".php"))
 		include $chemin_ark."/arkchain.".$i.".php";
+if(isset($genesis_rkrdatasrc) && $genesis_rkrdatasrc=="dbfromfile") //check ark from genesis dbfromfile (if enabled, default is to use dbfromfile, if error with your ark config, you can put "originfile" config in genesis.rkrdatasrc.php)
+{
+	$arktmp=$genesisdbfromfile->orderby("ordre","arkchain");
+	if(isset($arktmp) && count($arktmp)>0)
+		$arkchain=$arktmp;
+}
 if(isset($arkchain) && count($arkchain)>0)
 {
 	foreach($arkchain as $arkcour)
@@ -107,7 +131,9 @@ else
 
 //include classes abstract
 $chemin_classes=$arkitect->get("abstract");
-$tab_class=$loader->charg_dossier_dans_tab($chemin_classes);
+$tab_class=array();
+if(isset($loader) && $loader)
+	$tab_class=$loader->charg_dossier_dans_tab($chemin_classes);
 sort($tab_class);
 //print_r($tab_class);
 foreach($tab_class as $class_to_load)
@@ -156,13 +182,17 @@ if(isset($arkchain) && count($arkchain)>0)
 
 //charge chains dans tab
 $chemin_chain=$arkitect->get("chain");
-$chaintab=$loader->charg_chain_dans_tab($chemin_chain);
+$chaintab=array();
+if(isset($loader) && $loader)
+	$chaintab=$loader->charg_chain_dans_tab($chemin_chain);
 //print_r($chaintab);
 
 
 
 //init initer
 $initer=array();
+$initer['genesisdbfromfile']=$genesisdbfromfile;
+$initer['requestor']=$requestor;
 $initer['chainconnector']=$chainconnector;
 $initer['chaintab']=$chaintab;
 
@@ -254,7 +284,9 @@ foreach($tabconnector as $connectorcour)
 
 
 //construct tab to print (array with the connector data to print)
-$toprint=$loader->construct_tab_toprint($tabconnector,$initer);
+$toprint=array();
+if(isset($loader) && $loader)
+	$toprint=$loader->construct_tab_toprint($tabconnector,$initer);
 //print_r($toprint);
 $initer['toprint']=$toprint;
 
@@ -279,7 +311,9 @@ foreach($tabconnector as $connectorcour)
 
 
 //reconstruct tab to print (array with the connector data to print)
-$toprint=$loader->construct_tab_toprint($tabconnector,$initer);
+$toprint=array();
+if(isset($loader) && $loader)
+	$toprint=$loader->construct_tab_toprint($tabconnector,$initer);
 //print_r($toprint);
 $initer['toprint']=$toprint;
 

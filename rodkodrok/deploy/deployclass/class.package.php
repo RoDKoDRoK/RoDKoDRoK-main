@@ -137,7 +137,8 @@ class PratikPackage extends ClassIniter
 			
 			//load static dump if exists
 			$dumper=null;
-			if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+			$dumploaded=false;
+			if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 			{
 				$dumpname="dump.".$packagecodename."___static";
 				$instanceDump=new PratikDump($this->initer,$dumpname);
@@ -148,6 +149,25 @@ class PratikPackage extends ClassIniter
 					//load dump
 					$dumper=$instanceDump->dumpselected;
 					$dumper->importDump($packagelastdumptoload);
+					$dumploaded=true;
+				}
+			}
+			
+			//load from genesis dbfromfile to new db table
+			if(!$dumploaded && file_exists("package/".$packagecodename."/static/static.db.destroyer.".$sqltype))
+			{
+				$sqltoload=file_get_contents("package/".$packagecodename."/static/static.db.destroyer.".$sqltype); //get sql file destroy
+				$tabsqltoload=explode(";",$sqltoload);
+				foreach($tabsqltoload as $sqlcour)
+				{
+					//prepare dump for this sql line (cas drop table)
+					if($this->requestor && method_exists($this->requestor,"exportGenesisdbfromfileToDb"))
+					{
+						$tabtabletokill=$this->checkDropTable($sqlcour);
+						foreach($tabtabletokill as $tablecour)
+							if($this->genesisdbfromfile->isTable($tablecour) && (!isset($this->initer['descripter']['exportgenesis']) || (isset($this->initer['descripter']['exportgenesis']) && $this->initer['descripter']['exportgenesis']==true)))
+								$this->requestor->exportGenesisdbfromfileToDb($tablecour);
+					}		
 				}
 			}
 			
@@ -341,7 +361,7 @@ class PratikPackage extends ClassIniter
 			
 			//load generator dump if exists
 			$dumper=null;
-			if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+			if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 			{
 				$dumpname="dump.".$packagecodename."___generator";
 				$instanceDump=new PratikDump($this->initer,$dumpname);
@@ -538,7 +558,7 @@ class PratikPackage extends ClassIniter
 			{
 				//start dump
 				$dumper=null;
-				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 				{
 					$dumpname="dump.".$packagecodename."___static";
 					$instanceDump=new PratikDump($this->initer,$dumpname);
@@ -720,7 +740,7 @@ class PratikPackage extends ClassIniter
 			{
 				//start dump
 				$dumper=null;
-				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 				{
 					$dumpname="dump.".$packagecodename."___generator";
 					$instanceDump=new PratikDump($this->initer,$dumpname);
@@ -1178,9 +1198,10 @@ class PratikPackage extends ClassIniter
 		
 		if(isset($this->conf['maindb']['moteurbd']))
 		{
-			switch($this->conf['maindb']['moteurbd'])
+			$dbcour=strtolower($this->conf['maindb']['moteurbd']);
+			switch($dbcour)
 			{
-				case "Mysql":
+				case "mysql":
 					$sqltype="sql";
 				break;
 				
@@ -1371,7 +1392,7 @@ class PratikPackage extends ClassIniter
 				{
 					//start dump
 					$dumper=null;
-					if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+					if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 					{
 						$dumpname="dump.".$packagecodename."___static";
 						$instanceDump=new PratikDump($this->initer,$dumpname);
@@ -1481,7 +1502,7 @@ class PratikPackage extends ClassIniter
 				
 				//recup dump with import
 				$dumper=null;
-				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 				{
 					$dumpname="dump.".$packagecodename."___static";
 					$instanceDump=new PratikDump($this->initer,$dumpname);
@@ -1654,7 +1675,7 @@ class PratikPackage extends ClassIniter
 				{
 					//start dump
 					$dumper=null;
-					if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+					if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 					{
 						$dumpname="dump.".$packagecodename."___generator";
 						$instanceDump=new PratikDump($this->initer,$dumpname);
@@ -1826,7 +1847,7 @@ class PratikPackage extends ClassIniter
 				
 				//recup dump with import
 				$dumper=null;
-				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				if((class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump"))) && isset($this->instanceConf) && $this->instanceConf!=null)
 				{
 					$dumpname="dump.".$packagecodename."___generator";
 					$instanceDump=new PratikDump($this->initer,$dumpname);

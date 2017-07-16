@@ -3,6 +3,7 @@
 class PratikInitersimul extends ClassIniter
 {
 	var $prepareiniter=true;
+	var $tabtransversedatatounset=array();
 	
 	function __construct($initer=array(),$prepareiniter=true)
 	{
@@ -10,6 +11,8 @@ class PratikInitersimul extends ClassIniter
 		
 		$this->prepareiniter=$prepareiniter;
 		
+		$this->tabtransversedatatounset=array();
+		$this->tabtransversedatatounset[]="transversedata";
 	}
 	
 	
@@ -18,7 +21,12 @@ class PratikInitersimul extends ClassIniter
 		//simulation d'un initer avec les paramètres get
 		$initer=$initercreated;
 		
-		//clean old initer
+		//clean transversedata
+		if(is_array($this->tabtransversedatatounset))
+			foreach($this->tabtransversedatatounset as $transversedatatounset)
+				unset($initer[$transversedatatounset]);
+		
+		//clean old initer TO KILL IF POSSIBLE
 		if($this->prepareiniter)
 		{
 			//SET INITER FIRST VAR
@@ -28,6 +36,23 @@ class PratikInitersimul extends ClassIniter
 		}
 		
 		//CREATE INITER
+		//load genesis
+		$genesisdbfromfile=null;
+		$requestor=null;
+		$chemin_genesis="rkrsystem/src/genesis";
+		if(file_exists($chemin_genesis."/genesis.rkrdatasrc.php"))
+			include $chemin_genesis."/genesis.rkrdatasrc.php";
+		if(file_exists($chemin_genesis."/genesis.dbfromfile.php"))
+		{
+			include_once $chemin_genesis."/genesis.dbfromfile.php";
+			$genesisdbfromfile=new DbFromFile();
+			if(file_exists($chemin_genesis."/genesis.requestor.php"))
+			{
+				include_once $chemin_genesis."/genesis.requestor.php";
+				$requestor=new Requestor($genesisdbfromfile);
+			}
+		}
+		
 		//load ark
 		$tab_chemin_ark=array("deploy/deployark","core/src/ark");
 		foreach($tab_chemin_ark as $chemin_ark)
@@ -39,6 +64,12 @@ class PratikInitersimul extends ClassIniter
 			for($i=1;$i<=20;$i++)
 				if(file_exists($chemin_ark."/arkchain.".$i.".php"))
 					include $chemin_ark."/arkchain.".$i.".php";
+			if(isset($genesis_rkrdatasrc) && $genesis_rkrdatasrc=="dbfromfile") //check ark from genesis dbfromfile (if enabled, default is to use dbfromfile, if error with your ark config, you can put "originfile" config in genesis.rkrdatasrc.php)
+			{
+				$arktmp=$genesisdbfromfile->orderby("ordre","arkchain");
+				if(isset($arktmp) && count($arktmp)>0)
+					$arkchain=$arktmp;
+			}
 			if(isset($arkchain) && count($arkchain)>0)
 				foreach($arkchain as $arkcour)
 				{
@@ -67,7 +98,7 @@ class PratikInitersimul extends ClassIniter
 					if(file_exists($chemin_ark."/class.".$arkcour['file'].".php"))
 					{
 						//include_once $chemin_ark."/class.".$arkcour['file'].".php";
-						if($arkcour['makevar'])
+						if($arkcour['makevar'] && class_exists($arkcour['class']))
 							eval("\$".$arkcour['var']."=new ".$arkcour['class']."();");
 					}
 				}
@@ -77,6 +108,8 @@ class PratikInitersimul extends ClassIniter
 		$tab_chemin_abstract=array("core/src/abstract");
 		foreach($tab_chemin_abstract as $chemin_abstract)
 		{
+			if(!isset($loader) || !$loader)
+				continue;
 			$tab_class=$loader->charg_dossier_dans_tab($chemin_abstract);
 			if(!$tab_class)
 				continue;
@@ -98,28 +131,35 @@ class PratikInitersimul extends ClassIniter
 		$chainconnector="none";
 
 		//load chain connector
-		if(file_exists($arkitect->get("chain")."/connector.chain.default.php"))
-		{
-			include $arkitect->get("chain")."/connector.chain.default.php";
-			if(isset($firstchain) && file_exists($arkitect->get("chain")."/connector.chain.".$firstchain.".php"))
+		if(isset($arkitect))
+			if(file_exists($arkitect->get("chain")."/connector.chain.default.php"))
 			{
-				include $arkitect->get("chain")."/connector.chain.".$firstchain.".php";
-				$chainconnector=$firstchain;
-				//echo $firstchain;
+				include $arkitect->get("chain")."/connector.chain.default.php";
+				if(isset($firstchain) && file_exists($arkitect->get("chain")."/connector.chain.".$firstchain.".php"))
+				{
+					include $arkitect->get("chain")."/connector.chain.".$firstchain.".php";
+					$chainconnector=$firstchain;
+					//echo $firstchain;
+				}
+				else
+					$chainconnector="default";
 			}
-			else
-				$chainconnector="default";
-		}
 		
 		
 		//charge chains dans tab
-		$chemin_chain=$arkitect->get("chain");
-		$chaintab=$loader->charg_chain_dans_tab($chemin_chain);
+		$chemin_chain="";
+		if(isset($arkitect))
+			$chemin_chain=$arkitect->get("chain");
+		$chaintab=array();
+		if(isset($loader) && $loader)
+			$chaintab=$loader->charg_chain_dans_tab($chemin_chain);
 		//print_r($chaintab);
 
 
 		//init initer
 		$initer['simul']="on";
+		$initer['genesisdbfromfile']=$genesisdbfromfile;
+		$initer['requestor']=$requestor;
 		$initer['chainconnector']=$chainconnector;
 		$initer['chaintab']=$chaintab;
 		
@@ -135,7 +175,7 @@ class PratikInitersimul extends ClassIniter
 				if(!isset($arkcour['makevar']))
 					$arkcour['makevar']=false;
 				
-				if($arkcour['makevar'])
+				if($arkcour['makevar'] && class_exists($arkcour['class']))
 					$initer[$arkcour['var']]=${$arkcour['var']};
 			}
 		
@@ -146,6 +186,9 @@ class PratikInitersimul extends ClassIniter
 		//start connector	
 		foreach($tabconnector as $connectorcour)
 		{
+			if(!isset($arkitect))
+				continue;
+			
 			$connectorlowercase=strtolower($connectorcour['name']);
 			$connectorclass=ucfirst($connectorlowercase);
 

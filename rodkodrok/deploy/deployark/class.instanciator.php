@@ -24,6 +24,13 @@ class Instanciator
 		//$classname=strtolower($classname);
 		$classname=ucfirst($classname);
 		
+		//check data
+		if(!class_exists($classname))
+		{
+			//putolog... test if log exists before !!!
+			return null;
+		}
+		
 		//new instance
 		eval("\$instance=new ".$classname."(\$initer);");
 		

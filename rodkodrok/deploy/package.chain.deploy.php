@@ -4,7 +4,13 @@
 $tabpackagetodeploy=array();
 
 //PREMIERS PACKAGES OBLIGATOIRES PAR DEFAUT POUR TOUT DEPLOIEMENT !!!!!!!!!!!!!!!!!!!!!!
-//packages src.ark
+//packages genesis.starter
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="genesis.starter";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages ark.starter
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="ark.starter";
@@ -15,20 +21,20 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.default";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
-//...packages chain.default
+
+//packages abstract.starter
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.starter";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+//........PREMIERS PACKAGES OBLIGATOIRES PAR DEFAUT POUR TOUT DEPLOIEMENT !!!!!!!!!!!!!!!!!!!!!!
 
 
 //VOTRE CHAINE DE DEPLOIEMENT
 
 //PACKAGES BEFORE DB !!!
 
-//STARTER
-//packages abstract.starter
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.starter";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
-
+//STARTER (suite non obligatoire)
 //packages files.starter
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -79,28 +85,11 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal";
 
 
 
-//ABSTRACT ONLY
-//PRATIK STARTER
-//packages abstract.pratik
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.pratik";
-
-//TASK STARTER
-//packages abstract.task
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.task";
-
-
 
 
 //CONF ONLY
-//packages conf.wysiwyg
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="conf.wysiwyg";
 
+//ARKITECT EXTENSIONS
 //packages arkitect.extension.starter
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -111,6 +100,124 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="arkitect.extension.mirror";
 
+
+//ABSTRACT
+//PRATIK STARTER (BEFORE includer for arkitect path)
+//packages abstract.pratik
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.pratik";
+
+
+
+//GENESIS (FIRST)
+//packages genesis.params
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="genesis.params";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages genesis.istask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="genesis.chainistask";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages genesis.includer (classpath)
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="genesis.includer";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+
+
+
+//CONTENT WITHOUT VISUAL OUPTUT (WHICH EXECUTE CODE ONLY like server.cron or virtual.virtualtask chains...)
+//packages connector.thread.server.cron
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.server.cron";
+
+//packages connector.thread.virtual.virtualtask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.virtual.virtualtask";
+
+//packages connector.thread.server.terminal
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.server.terminal";
+
+//...CONTENT
+
+
+
+//OTHER CONF (AFTER CONTENT WITHOUT VISUAL OUPTUT !!!!! for arkitect path)
+//packages chain.cron.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.classpath";
+
+//packages chain.virtualtask.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.virtualtask.classpath";
+
+//packages chain.terminal.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal.classpath";
+
+
+//packages chain.cron.istask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.istask";
+
+//packages chain.virtualtask.istask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.virtualtask.istask";
+
+
+//packages conf.wysiwyg
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="conf.wysiwyg";
+
+
+
+
+
+
+//GENESIS (interaction with dbfromfile)
+//packages genesis.eventandtask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="genesis.eventandtask";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages genesis.chainandconnector
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="genesis.chainandconnector";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+
+
+
+//CODELOADER (FIRST)
+//packages genesis.codeloader (pour les class)
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="genesis.codeloader";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages integrate.codeloader.phpclass
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.codeloader.phpclass";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
 
 
@@ -272,26 +379,13 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.search";
 
 
 
+
 //CONNECTOR
 
 //packages connector.arkitectoutput
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.arkitectoutput";
-
-
-//CONNECTOR SRC
-//packages connector.codeloader (pour les class)
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.codeloader";
-//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
-
-//packages integrate.codeloader.phpclass
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.codeloader.phpclass";
-//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
 
 //CONNECTOR INSTANCIATOR EXTENDED (for driver auto instanciation)
@@ -329,36 +423,6 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="lang.fr_fr";
 
 
 //CONNECTOR INCLUDER
-//packages chain.index.classpath
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.index.classpath";
-
-//packages chain.ajax.classpath
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.ajax.classpath";
-
-//packages chain.cron.classpath
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.classpath";
-
-//packages chain.virtualtask.classpath
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.virtualtask.classpath";
-
-//packages chain.xml.classpath
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.xml.classpath";
-
-//packages chain.terminal.classpath
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal.classpath";
-
 //packages connector.includer
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -408,11 +472,6 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.db";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
-
-//packages connector.requestor
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.requestor";
 
 //... DB MAIN DEPLOYMENT !!!
 
@@ -469,37 +528,8 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.token";
 
 
 
-//CONTENT WITHOUT VISUAL OUPTUT (WHICH EXECUTE CODE ONLY like server.cron or virtual.virtualtask chains...)
-//packages connector.thread.server.cron
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.server.cron";
-
-//packages connector.thread.virtual.virtualtask
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.virtual.virtualtask";
-
-//packages connector.thread.server.terminal
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.server.terminal";
-
-//...CONTENT
-
-
-
 
 //SET CHAIN IS TASK (before EVENT)
-//packages chain.cron.istask
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.istask";
-
-//packages chain.virtualtask.istask
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.virtualtask.istask";
 
 //EVENT
 //packages rod.eventandtask
@@ -507,10 +537,6 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.eventandtask";
 
-//packages connector.event
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.event";
 
 
 //PACKAGES WITH ACTION ON TABLE EVENTEXECTASK AFTER THAT POINT...
@@ -626,6 +652,27 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.ws.json";
 
 //...CONTENT
+
+
+
+
+//CLASSPATH FOR CONTENT MAIN OUTPUT (like index, ajax, ...)
+//packages chain.index.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.index.classpath";
+
+//packages chain.ajax.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.ajax.classpath";
+
+//packages chain.xml.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.xml.classpath";
+//...CLASSPATH
+
 
 
 
