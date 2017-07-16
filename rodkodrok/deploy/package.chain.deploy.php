@@ -159,7 +159,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.filestorage
 
 
 
-//PRATIK
+//PRATIK (IMPORTANTS)
 //packages form
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -197,6 +197,18 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.dump";
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.initersimul";
+
+
+//PRATIK (MOINS IMPORTANTS, FACULTATIFS)
+//package pager
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.pager";
+
+//package search
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.search";
 
 
 
@@ -339,6 +351,15 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.token";
 
 
 
+//PRATIK WITH DB (IMPORTANTS POUR SITE MANAGEMENT ET LA SUITE)
+//package params
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.params";
+
+
+
+
 //SITE MANAGEMENT (AFTER DROIT BEFORE USER AND DESIGN)
 //packages site management
 $tabpackagetodeploy[]=array();
@@ -354,6 +375,11 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.caseandcolonne";
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratiklib.case.login";
+
+//packages case menu
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratiklib.case.menu";
 
 //...CASES
 
@@ -418,6 +444,21 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.headerfoote
 
 
 
+//MENUS
+//packages menu leftrightcolumn
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratiklib.menu.leftrightcolumn";
+
+//packages adminmenu
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.adminmenu";
+
+//...MENUS
+
+
+
 //CONTENT
 //packages connector.content
 $tabpackagetodeploy[]=array();
@@ -457,7 +498,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.cache.rodca
 
 
 
-//PRATIK WITH DB
+//PRATIK WITH DB (FACULTATIFS, MOINS IMPORTANTS)
 //package mail
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";

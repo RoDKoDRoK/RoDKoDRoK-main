@@ -937,6 +937,7 @@ class PratikPackage extends ClassIniter
 		$preform['deployconfirmbutton']=true;
 		$preform['destroyconfirmbutton']=true;
 		$preform['updateconfirmbutton']=true;
+		$preform['totaldestroyconfirmbutton']=true;
 		
 		$preform['hiddencodename']=true;
 		
@@ -975,6 +976,11 @@ class PratikPackage extends ClassIniter
 		   }
 		 }
 		 reset($objects);
+		 
+		 //force close dir before remove (php7)
+		 $closer=opendir($dir);
+		 closedir($closer);
+		 
 		 rmdir($dir);
 	  }
 	}
@@ -2222,6 +2228,28 @@ class PratikPackage extends ClassIniter
 		}
 		
 		return $tabtable;
+	}
+	
+	
+	
+	function totaldestroy($packagecodename="example")
+	{
+		//destroy if package deployed
+		if(file_exists("core/files/tmp/log/packageloaded/".$packagecodename.".loaded.log"))
+			$this->destroy($packagecodename);
+		
+		//zip and archive old package with date in filename
+		if($this->zipAndArchivePackage($packagecodename))
+		{
+			//kill old package
+			$dir = "package/".$packagecodename;
+			$this->rrmdir($dir);
+		}
+		
+		//kill zip
+		if(file_exists($this->folderdestdownload.$packagecodename.".zip"))
+			unlink($this->folderdestdownload.$packagecodename.".zip");
+		
 	}
 	
 }
