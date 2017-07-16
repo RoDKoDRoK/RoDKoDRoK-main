@@ -40,6 +40,14 @@ class PratikDownloader extends ClassIniter
 		ksort($tabsrclink);
 		$tabsrclink=array_slice($tabsrclink,0);
 		
+		//check and prepare local link without http
+		for($cptsrclink=0;$cptsrclink<count($tabsrclink);$cptsrclink++)
+		{
+			$urlcour=$tabsrclink[$cptsrclink];
+			if(substr($urlcour,0,4)!="http")
+				$tabsrclink[$cptsrclink]="http".($this->isSecure()?"s":"")."://".$_SERVER['HTTP_HOST']."/".$urlcour;
+		}
+		
 		return $tabsrclink;
 	}
 	
@@ -77,6 +85,11 @@ class PratikDownloader extends ClassIniter
 		return "";
 	}
 	
+	function isSecure()
+	{
+		return ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443);
+	}
+
 }
 
 
