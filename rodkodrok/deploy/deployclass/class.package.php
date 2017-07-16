@@ -1617,6 +1617,7 @@ class PratikPackage extends ClassIniter
 			if($filesizeoldsql!=$filesizenewsql)
 			{
 				//kill db generator
+				$sqltype=$this->getExtSql();
 				$chemin_db_generator_tpl="package/".$packagecodename."/generator/generator.db.destroyer.__INSTANCE__.".$sqltype.".tpl";
 				if(isset($this->db) && $this->db && file_exists($chemin_db_generator_tpl))
 				{
@@ -1688,6 +1689,7 @@ class PratikPackage extends ClassIniter
 				}
 				
 				//load db generator
+				$sqltype=$this->getExtSql();
 				$chemin_db_generator_tpl="package/".$packagecodename."/generator/generator.db.deployer.__INSTANCE__.".$sqltype.".tpl";
 				if(isset($this->db) && $this->db && file_exists($chemin_db_generator_tpl))
 				{
@@ -1934,6 +1936,151 @@ class PratikPackage extends ClassIniter
 			//include postdeployer generator
 			if(file_exists("package/".$packagecodename."/generator/generator.postdeployer.php"))
 				include "package/".$packagecodename."/generator/generator.postdeployer.php";
+			
+			
+			
+			//kill old files which are not in the updated package yet (and put last conflict file instead if exists)
+			//a file of $tabisinpackage for the package not in $tabdeployedfiles and a conflictfile for the package not in $tabdeployedfiles ==> tabisinpackage unset or conflictfile unset, kill file (or last conflict replace or reorganize conflict => see destroy) 
+			include $this->conflictfolder."/fileisinpackage.php";
+			include $this->conflictfolder."/conflict.php";
+			foreach($tabfileisinpackage as $fileisinpackageconvert=>$filepackage)
+			{
+				//prepare fileisinpackage with ----- instead of / and folder file separation
+				$fileisinpackage=str_replace("-----","/",$fileisinpackageconvert);
+				$folder_isinpackage=substr($fileisinpackage,0,strrpos($fileisinpackage,"/"));
+				$filename_isinpackage=substr($fileisinpackage,strrpos($fileisinpackage,"/"));
+				
+				//check file is in package
+				$filetosearch=false;
+				$conflictfilefound="";
+				if($filepackage==$packagecodename)
+				{
+					$filetosearch=true;
+				}
+				else
+				{
+					//find file in existing conflict
+					$conflictnamefilecour="/___CONFLICTFILE1___".substr($filename_isinpackage,1);
+					if(file_exists($this->conflictfolder."/".$folder_isinpackage.$conflictnamefilecour))
+					{
+						$cptconflict="1";
+						
+						while(file_exists($this->conflictfolder."/".$folder_isinpackage.$conflictnamefilecour))
+						{
+							include $this->conflictfolder."/conflict.php";
+							$tabid=str_replace("/","-----",$folder_isinpackage.$conflictnamefilecour);
+							if(isset($tabconflict[$tabid]) && $tabconflict[$tabid]==$packagecodename)
+							{
+								$conflictfilefound=$conflictnamefilecour;
+								$filetosearch=true;
+								break;
+							}
+						
+							$conflictnamefilecour="/___CONFLICTFILE".($cptconflict++)."___".substr($filename_isinpackage,1);
+						}
+					}
+				}
+				//search file in deployed files, else kill it
+				if($filetosearch)
+				{
+					if(array_search($fileisinpackage,$tabdeployedfiles)!==false)
+					{
+						//kill old file
+						if(file_exists($folder_isinpackage.$filename_isinpackage))
+						{
+							//(conflict "reverse" mode)
+							if($this->conflictresolution!=null)
+							{
+								//maj fileisinpackage.php
+								$this->addToFileIsInPackageFile($packagecodename,$folder_isinpackage.$filename_isinpackage,"unset");
+								
+								if($this->conflictresolution=="force" || $this->conflictresolution=="keep")
+									unlink($folder_isinpackage.$filename_isinpackage);
+								
+								//check if a conflict file exists ___CONFLICT... else suppr file and continue
+								if(!file_exists($this->conflictfolder."/".$folder_isinpackage."/___CONFLICTFILE1___".substr($filename_isinpackage,1)))
+								{
+									if(file_exists($folder_isinpackage.$filename_isinpackage))
+										unlink($folder_isinpackage.$filename_isinpackage);
+									continue;
+								}
+								
+								//if a conflict file exists, find conflict for this package codename in tabconflict in conflict.php
+								//include $this->conflictfolder."/conflict.php";
+								$cptconflict="1";
+								$filecour=$folder_isinpackage."/___CONFLICTFILE".$cptconflict."___".substr($filename_isinpackage,1);
+								$conflictfile="";
+								$cptconflictfound=0;
+								while(file_exists($this->conflictfolder."/".$filecour))
+								{
+									$tabid=str_replace("/","-----",$filecour);
+									if(isset($tabconflict[$tabid]) && $tabconflict[$tabid]==$packagecodename)
+									{
+										$conflictfile=$filecour;
+										$cptconflictfound=$cptconflict;
+										break;
+									}
+									
+									$cptconflict++;
+									$filecour=$folder_isinpackage."/___CONFLICTFILE".$cptconflict."___".substr($filename_isinpackage,1);
+								}
+								
+								//if not found, suppr file and move last conflict file instead of it
+								if($conflictfile=="")
+								{
+									//suppr file
+									unlink($folder_isinpackage.$filename_isinpackage);
+									//move last conflict file to official file
+									$cptconflictlast=(--$cptconflict);
+									if($this->conflictresolution=="reverse")
+										rename($this->conflictfolder."/".$folder_isinpackage."/___CONFLICTFILE".$cptconflictlast."___".substr($filename_isinpackage,1),$folder_isinpackage.$filename_isinpackage);
+									//clear last conflict file (check kill and clear in $tabconflict in conflict.php)
+									if(file_exists($this->conflictfolder."/".$folder_isinpackage."/___CONFLICTFILE".$cptconflictlast."___".substr($filename_isinpackage,1)))
+										unlink($this->conflictfolder."/".$folder_isinpackage."/___CONFLICTFILE".$cptconflictlast."___".substr($filename_isinpackage,1));
+									//rewrite conflict files in tabconflict in conflict.php (add new lines with unset($tabconflict[lastconflictile]) )
+									$filecour=$this->conflictfolder."/".$folder_isinpackage."/___CONFLICTFILE".$cptconflictlast."___".substr($filename_isinpackage,1);
+									$this->addToConflictFile($filecour,"unset");
+								}
+								//if conflict found, suppr conflict and reorder the next ones and rewrite them in tabconflict in conflict.php and DO NOT suppr file in use
+								else
+								{
+									//suppr conflict file
+									unlink($this->conflictfolder."/".$conflictfile);
+									
+									//reorder next conflict files
+									$cptconflict=(++$cptconflictfound);
+									$filecour=$folder_isinpackage."/___CONFLICTFILE".$cptconflict."___".substr($filename_isinpackage,1);
+									while(file_exists($this->conflictfolder."/".$filecour))
+									{
+										//move to prec conflict file
+										$destfilecour=$folder_isinpackage."/___CONFLICTFILE".($cptconflict-1)."___".substr($filename_isinpackage,1);
+										rename($this->conflictfolder."/".$filecour,$this->conflictfolder."/".$destfilecour);
+										
+										//rewrite conflict files in tabconflict in conflict.php (add new lines with $tabconflict[cour]=$tabconflict[prec] or unset($tabconflict[cour]) )
+										$this->addToConflictFile($filecour,"update",array('destfile'=>$destfilecour));
+										
+										//next
+										$cptconflict++;
+										$filecour=$folder_isinpackage."/___CONFLICTFILE".$cptconflict."___".substr($filename_isinpackage,1);
+									}
+									
+									//end rewrite conflict files in tabconflict in conflict.php (unset($tabconflict[cour] for last conflict file) )
+									$filecour=$folder_isinpackage."/___CONFLICTFILE".($cptconflict-1)."___".substr($filename_isinpackage,1);
+									$this->addToConflictFile($filecour,"unset");
+									
+								}
+							}
+							else
+							{
+								//suppr file
+								unlink($folder_isinpackage.$filename_isinpackage);
+							}
+						}
+					}
+				}
+			}
+			
+			
 			
 			//reload initer
 			$this->reloadIniter();

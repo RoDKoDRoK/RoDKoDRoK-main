@@ -429,6 +429,11 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.package";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
+//packages packager
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.packager";
+
 
 
 
