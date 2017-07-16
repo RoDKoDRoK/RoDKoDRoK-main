@@ -1,1 +1,1 @@
-ROD - Content and Server Management Framework - V 0.0.1
+RoDKoDRoK - The Content and Server Management Framework - V 0.0.2

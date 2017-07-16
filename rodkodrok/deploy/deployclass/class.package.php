@@ -51,8 +51,8 @@ class PratikPackage extends ClassIniter
 			
 			//load conf package
 			$confstatic=null;
-			if(file_exists("package/".$packagecodename."/conf.package.xml"))
-				$confstatic=simplexml_load_file("package/".$packagecodename."/conf.package.xml");
+			if(file_exists("package/".$packagecodename."/conf.static.xml"))
+				$confstatic=simplexml_load_file("package/".$packagecodename."/conf.static.xml");
 			$this->initer['confstatic']=$confstatic;
 			
 			//load conf form package
@@ -133,6 +133,22 @@ class PratikPackage extends ClassIniter
 				
 				//return tab
 				$tabdeployedfiles[]=$namefilecour;
+			}
+			
+			//load static dump if exists
+			$dumper=null;
+			if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+			{
+				$dumpname="dump.".$packagecodename."___static";
+				$instanceDump=new PratikDump($this->initer,$dumpname);
+				$packagelastdumptoload=$instanceDump->getLastDump($dumpname);
+				
+				if($packagelastdumptoload!="")
+				{
+					//load dump
+					$dumper=$instanceDump->dumpselected;
+					$dumper->importDump($packagelastdumptoload);
+				}
 			}
 			
 			//load files static
@@ -314,6 +330,22 @@ class PratikPackage extends ClassIniter
 				}
 			}
 			
+			//load generator dump if exists
+			$dumper=null;
+			if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+			{
+				$dumpname="dump.".$packagecodename."___generator";
+				$instanceDump=new PratikDump($this->initer,$dumpname);
+				$packagelastdumptoload=$instanceDump->getLastDump($dumpname);
+				
+				if($packagelastdumptoload!="")
+				{
+					//load dump
+					$dumper=$instanceDump->dumpselected;
+					$dumper->importDump($packagelastdumptoload);
+				}
+			}
+			
 			
 			
 			
@@ -458,8 +490,8 @@ class PratikPackage extends ClassIniter
 			
 			//load conf package
 			$confstatic=null;
-			if(file_exists("package/".$packagecodename."/conf.package.xml"))
-				$confstatic=simplexml_load_file("package/".$packagecodename."/conf.package.xml");
+			if(file_exists("package/".$packagecodename."/conf.static.xml"))
+				$confstatic=simplexml_load_file("package/".$packagecodename."/conf.static.xml");
 			$this->initer['confstatic']=$confstatic;
 			
 			//get conf form saved (already present in $this->conf)
@@ -488,11 +520,37 @@ class PratikPackage extends ClassIniter
 			$sqltype=$this->getExtSql();
 			if(isset($this->db) && $this->db && file_exists("package/".$packagecodename."/static/static.db.destroyer.".$sqltype))
 			{
+				//start dump
+				$dumper=null;
+				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				{
+					$dumpname="dump.".$packagecodename."___static";
+					$instanceDump=new PratikDump($this->initer,$dumpname);
+					$dumper=$instanceDump->dumpselected;
+					$dumper->startDump();
+				}
+				
+				//get sql file
 				$sqltoload=file_get_contents("package/".$packagecodename."/static/static.db.destroyer.".$sqltype);
 				$tabsqltoload=explode(";",$sqltoload);
 				foreach($tabsqltoload as $sqlcour)
 				{
+					//prepare dump for this sql line (cas drop table)
+					if($dumper)
+					{
+						$tabtabletokill=$this->checkDropTable($sqlcour);
+						foreach($tabtabletokill as $tablecour)
+							$dumper->getTableData($tablecour,false);
+					}
+					
+					//exec sql line
 					$req=$this->db->query($sqlcour);
+				}
+				
+				//end dump
+				if($dumper)
+				{
+					$dumper->endDump();
 				}
 			}
 			
@@ -645,6 +703,16 @@ class PratikPackage extends ClassIniter
 			$chemin_db_generator_tpl="package/".$packagecodename."/generator/generator.db.destroyer.__INSTANCE__.".$sqltype.".tpl";
 			if(isset($this->db) && $this->db && file_exists($chemin_db_generator_tpl))
 			{
+				//start dump
+				$dumper=null;
+				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				{
+					$dumpname="dump.".$packagecodename."___generator";
+					$instanceDump=new PratikDump($this->initer,$dumpname);
+					$dumper=$instanceDump->dumpselected;
+					$dumper->startDump();
+				}
+				
 				//pour chaque instance à générer
 				foreach($confgenerator->instance as $instance)
 				{
@@ -681,9 +749,25 @@ class PratikPackage extends ClassIniter
 					$tabsqltoload=explode(";",$sqltoload);
 					foreach($tabsqltoload as $sqlcour)
 					{
+						//prepare dump for this sql line (cas drop table)
+						if($dumper)
+						{
+							$tabtabletokill=$this->checkDropTable($sqlcour);
+							foreach($tabtabletokill as $tablecour)
+								$dumper->getTableData($tablecour,false);
+						}
+						
+						//exec sql line
 						$req=$this->db->query($sqlcour);
 					}
 				}
+				
+				//end dump
+				if($dumper)
+				{
+					$dumper->endDump();
+				}
+				
 			}
 			
 			
@@ -886,6 +970,20 @@ class PratikPackage extends ClassIniter
 	{
 		if(file_exists("package/".$packagecodename) && $update)
 		{
+			//keep some old files before starting update
+			if($update)
+			{
+				if(file_exists("package/".$packagecodename."/conf.static.xml"))
+					copy("package/".$packagecodename."/conf.static.xml",$this->folderdestarchives.$packagecodename.".conf.static.xml");
+				if(file_exists("package/".$packagecodename."/conf.generator.xml"))
+					copy("package/".$packagecodename."/conf.generator.xml",$this->folderdestarchives.$packagecodename.".conf.generator.xml");
+				if(file_exists("package/".$packagecodename."/static/static.db.deployer.sql"))
+					copy("package/".$packagecodename."/static/static.db.deployer.sql",$this->folderdestarchives.$packagecodename.".static.db.deployer.sql");
+				if(file_exists("package/".$packagecodename."/generator/generator.db.deployer.__INSTANCE__.sql.tpl"))
+					copy("package/".$packagecodename."/generator/generator.db.deployer.__INSTANCE__.sql.tpl",$this->folderdestarchives.$packagecodename.".generator.db.deployer.__INSTANCE__.sql.tpl");
+				
+			}
+			
 			//zip and archive old package with date in filename
 			if($this->zipAndArchivePackage($packagecodename))
 			{
@@ -1168,7 +1266,7 @@ class PratikPackage extends ClassIniter
 	}
 	
 	
-	
+		
 	function update($packagecodename="example")
 	{
 		//conflict init
@@ -1196,10 +1294,19 @@ class PratikPackage extends ClassIniter
 			if(isset($descripter))
 				$this->initer['descripter']=$descripter;
 			
+			//check if you keep old conf
+			if(isset($this->initer['descripter']['update']['keepconfstatic']) && $this->initer['descripter']['update']['keepconfstatic'])
+			{
+				if(file_exists("package/".$packagecodename."/conf.static.xml"))
+					unlink("package/".$packagecodename."/conf.static.xml");
+				rename($this->folderdestarchives.$packagecodename.".conf.static.xml","package/".$packagecodename."/conf.static.xml");
+			}
+			if(file_exists($this->folderdestarchives.$packagecodename.".conf.static.xml"))
+				unlink($this->folderdestarchives.$packagecodename.".conf.static.xml");
 			//load conf package
 			$confstatic=null;
-			if(file_exists("package/".$packagecodename."/conf.package.xml"))
-				$confstatic=simplexml_load_file("package/".$packagecodename."/conf.package.xml");
+			if(file_exists("package/".$packagecodename."/conf.static.xml"))
+				$confstatic=simplexml_load_file("package/".$packagecodename."/conf.static.xml");
 			$this->initer['confstatic']=$confstatic;
 			
 			//load conf form package
@@ -1225,81 +1332,149 @@ class PratikPackage extends ClassIniter
 			$this->reloadIniter();
 			
 			
-			//load db static
-			$sqltype=$this->getExtSql();
-			$chemin_db_static="package/".$packagecodename."/static/static.db.deployer.".$sqltype;
-			if(isset($this->db) && $this->db && file_exists($chemin_db_static))
+			//db static upload
+			$filesizeoldsql=0;
+			$filesizenewsql=0;
+			if(file_exists($this->folderdestarchives.$packagecodename.".static.db.deployer.sql"))
 			{
-				//sql exec
-				$sqltoload=file_get_contents($chemin_db_static);
-				$tabsqltoload=explode(";",$sqltoload);
-				foreach($tabsqltoload as $sqlcour)
+				$filesizeoldsql=filesize($this->folderdestarchives.$packagecodename.".static.db.deployer.sql");
+				$filesizenewsql=filesize("package/".$packagecodename."/static/static.db.deployer.sql");
+				unlink($this->folderdestarchives.$packagecodename.".static.db.deployer.sql");
+			}
+			if($filesizeoldsql!=$filesizenewsql)
+			{
+				//kill db static
+				$sqltype=$this->getExtSql();
+				if(isset($this->db) && $this->db && file_exists("package/".$packagecodename."/static/static.db.destroyer.".$sqltype))
 				{
-					$req=$this->db->query($sqlcour);
+					//start dump
+					$dumper=null;
+					if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+					{
+						$dumpname="dump.".$packagecodename."___static";
+						$instanceDump=new PratikDump($this->initer,$dumpname);
+						$dumper=$instanceDump->dumpselected;
+						$dumper->startDump();
+					}
+					
+					//get sql file
+					$sqltoload=file_get_contents("package/".$packagecodename."/static/static.db.destroyer.".$sqltype);
+					$tabsqltoload=explode(";",$sqltoload);
+					foreach($tabsqltoload as $sqlcour)
+					{
+						//fill dump for the tables of this sql line (cas drop table)
+						if($dumper)
+						{
+							$tabtabletokill=$this->checkDropTable($sqlcour);
+							foreach($tabtabletokill as $tablecour)
+								$dumper->getTableData($tablecour,false);
+						}
+						
+						//exec sql line
+						$req=$this->db->query($sqlcour);
+					}
+					
+					//end dump
+					if($dumper)
+					{
+						$dumper->endDump();
+					}
 				}
 				
-				//filename creation
-				$namefilecour=str_replace("package/".$packagecodename."/static/","core/files/db/".$packagecodename.".",$chemin_db_static);
-				
-				//conflict resolution "reverse" mode
-				if($this->conflictresolution!=null)
+				//load db static
+				$sqltype=$this->getExtSql();
+				$chemin_db_static="package/".$packagecodename."/static/static.db.deployer.".$sqltype;
+				if(isset($this->db) && $this->db && file_exists($chemin_db_static))
 				{
-					//only if new file
-					if(!file_exists($namefilecour))
+					//sql exec
+					$sqltoload=file_get_contents($chemin_db_static);
+					$tabsqltoload=explode(";",$sqltoload);
+					foreach($tabsqltoload as $sqlcour)
 					{
-						//setup annuaire files in package 
-						$this->addToFileIsInPackageFile($packagecodename,$namefilecour);
-						
-						//replace original file
-						file_put_contents($namefilecour,$sqltoload);
+						$req=$this->db->query($sqlcour);
 					}
-					else
+					
+					//filename creation
+					$namefilecour=str_replace("package/".$packagecodename."/static/","core/files/db/".$packagecodename.".",$chemin_db_static);
+					
+					//conflict resolution "reverse" mode
+					if($this->conflictresolution!=null)
 					{
-						//find existing conflict
-						$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE1___",$namefilecour);
-						$conflictfilefound="";
-						if(file_exists($this->conflictfolder."/".$conflictnamefilecour))
+						//only if new file
+						if(!file_exists($namefilecour))
 						{
-							$cptconflict="1";
-							while(file_exists($this->conflictfolder."/".$conflictnamefilecour))
-							{
-								include $this->conflictfolder."/conflict.php";
-								$tabid=str_replace("/","-----",$conflictnamefilecour);
-								if(isset($tabconflict[$tabid]) && $tabconflict[$tabid]==$packagecodename)
-								{
-									$conflictfilefound=$conflictnamefilecour;
-									break;
-								}
-								
-								$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE".($cptconflict++)."___",$namefilecour);
-							}
-						}
-						
-						//if conflict found
-						if(file_exists($conflictfilefound))
-						{
-							//if conflict exists, replace only conflict file
-							if(!is_dir($this->conflictfolder."/core/files/db"))
-								mkdir($this->conflictfolder."/core/files/db",0777,true);
-							copy($namefilecour,$this->conflictfolder."/".$conflictnamefilecour);
-						}
-						else
-						{
+							//setup annuaire files in package 
+							$this->addToFileIsInPackageFile($packagecodename,$namefilecour);
+							
 							//replace original file
 							file_put_contents($namefilecour,$sqltoload);
 						}
+						else
+						{
+							//find existing conflict
+							$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE1___",$namefilecour);
+							$conflictfilefound="";
+							if(file_exists($this->conflictfolder."/".$conflictnamefilecour))
+							{
+								$cptconflict="1";
+								while(file_exists($this->conflictfolder."/".$conflictnamefilecour))
+								{
+									include $this->conflictfolder."/conflict.php";
+									$tabid=str_replace("/","-----",$conflictnamefilecour);
+									if(isset($tabconflict[$tabid]) && $tabconflict[$tabid]==$packagecodename)
+									{
+										$conflictfilefound=$conflictnamefilecour;
+										break;
+									}
+									
+									$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE".($cptconflict++)."___",$namefilecour);
+								}
+							}
+							
+							//if conflict found
+							if(file_exists($conflictfilefound))
+							{
+								//if conflict exists, replace only conflict file
+								if(!is_dir($this->conflictfolder."/core/files/db"))
+									mkdir($this->conflictfolder."/core/files/db",0777,true);
+								copy($namefilecour,$this->conflictfolder."/".$conflictnamefilecour);
+							}
+							else
+							{
+								//replace original file
+								file_put_contents($namefilecour,$sqltoload);
+							}
+						}
+						
+					}
+					else
+					{
+						//create file
+						file_put_contents($namefilecour,$sqltoload);
 					}
 					
-				}
-				else
-				{
-					//create file
-					file_put_contents($namefilecour,$sqltoload);
+					//return tab
+					$tabdeployedfiles[]=$namefilecour;
 				}
 				
-				//return tab
-				$tabdeployedfiles[]=$namefilecour;
+				//recup dump with import
+				$dumper=null;
+				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				{
+					$dumpname="dump.".$packagecodename."___static";
+					$instanceDump=new PratikDump($this->initer,$dumpname);
+					$packagelastdumptoload=$instanceDump->getLastDump($dumpname);
+					
+					if($packagelastdumptoload!="")
+					{
+						//load dump
+						$dumper=$instanceDump->dumpselected;
+						$dumper->importDump($packagelastdumptoload);
+					}
+				}
+				
 			}
+			
 			
 			//load files static
 			foreach($this->initer['chaintab'] as $chaincour)
@@ -1391,6 +1566,13 @@ class PratikPackage extends ClassIniter
 			
 			
 			
+			//check if you keep old conf
+			if(isset($this->initer['descripter']['update']['keepconfgenerator']) && $this->initer['descripter']['update']['keepconfgenerator'])
+			{
+				if(file_exists("package/".$packagecodename."/conf.generator.xml"))
+					unlink("package/".$packagecodename."/conf.generator.xml");
+				rename($this->folderdestarchives.$packagecodename.".conf.generator.xml","package/".$packagecodename."/conf.generator.xml");
+			}
 			//load conf package generator
 			$confgenerator=null;
 			if(file_exists("package/".$packagecodename."/conf.generator.xml"))
@@ -1414,111 +1596,218 @@ class PratikPackage extends ClassIniter
 			$this->reloadIniter();
 			
 			
-			//load db generator
-			$chemin_db_generator_tpl="package/".$packagecodename."/generator/generator.db.deployer.__INSTANCE__.".$sqltype.".tpl";
-			if(isset($this->db) && $this->db && file_exists($chemin_db_generator_tpl))
+			//db generator upload
+			$filesizeoldsql=0;
+			$filesizenewsql=0;
+			if(file_exists($this->folderdestarchives.$packagecodename.".conf.generator.xml"))
 			{
-				//pour chaque instance à générer
-				foreach($confgenerator->instance as $instance)
+				$filesizeoldsql=filesize($this->folderdestarchives.$packagecodename.".conf.generator.xml");
+				$filesizenewsql=filesize("package/".$packagecodename."/conf.generator.xml");
+				unlink($this->folderdestarchives.$packagecodename.".conf.generator.xml");
+			}
+			if(file_exists($this->folderdestarchives.$packagecodename.".generator.db.deployer.__INSTANCE__.sql.tpl"))
+			{
+				if($filesizeoldsql==$filesizenewsql)
 				{
-					//generate sql
-					$instanceTpl=new Tp($this->conf,$this->log,"backoffice");
-					$tpl=$instanceTpl->tpselected;
-					
-					//include generator conf tpl
-					$tabgeneratorconftpl=$this->loader->charg_generatorconftpl_dans_tab("package/".$packagecodename."/generator");
-					$tpl->remplir_template("generatorconf",$tabgeneratorconftpl);
-					
-					//include generator file cour
-					$tpl->remplir_template("chemintpltogenerate",$chemin_db_generator_tpl);
-					
-					//preparedatafortpl
-					$datafortpl=array();
-					if(isset($instanceGenerator))
-						$datafortpl=$instanceGenerator->prepareDataForTpl($instance);
-					
-					foreach($datafortpl as $iddatafortpl=>$contentdatafortpl)
-						$tpl->remplir_template($iddatafortpl,$contentdatafortpl);
-					
-					//generate file with tpl
-					$contentfilecour=$tpl->get_template($this->chemingeneratortpl);
-					
-					$namefilecour=str_replace("__INSTANCE__",$instance->name,$chemin_db_generator_tpl);
-					$namefilecour=substr($namefilecour,0,-4);
-					$namefilecour=str_replace("package/".$packagecodename."/generator/","core/files/db/".$packagecodename.".",$namefilecour);
-					
-					//conflict resolution "reverse" mode
-					if($this->conflictresolution!=null)
+					$filesizeoldsql=filesize($this->folderdestarchives.$packagecodename.".generator.db.deployer.__INSTANCE__.sql.tpl");
+					$filesizenewsql=filesize("package/".$packagecodename."/generator/generator.db.deployer.__INSTANCE__.sql.tpl");
+				}
+				unlink($this->folderdestarchives.$packagecodename.".generator.db.deployer.__INSTANCE__.sql.tpl");
+			}
+			if($filesizeoldsql!=$filesizenewsql)
+			{
+				//kill db generator
+				$chemin_db_generator_tpl="package/".$packagecodename."/generator/generator.db.destroyer.__INSTANCE__.".$sqltype.".tpl";
+				if(isset($this->db) && $this->db && file_exists($chemin_db_generator_tpl))
+				{
+					//start dump
+					$dumper=null;
+					if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
 					{
-						//only if new file
-						if(!file_exists($namefilecour))
+						$dumpname="dump.".$packagecodename."___generator";
+						$instanceDump=new PratikDump($this->initer,$dumpname);
+						$dumper=$instanceDump->dumpselected;
+						$dumper->startDump();
+					}
+					
+					//pour chaque instance à générer
+					foreach($confgenerator->instance as $instance)
+					{
+						//generate sql
+						$instanceTpl=new Tp($this->conf,$this->log,"backoffice");
+						$tpl=$instanceTpl->tpselected;
+						
+						//include generator conf tpl
+						$tabgeneratorconftpl=$this->loader->charg_generatorconftpl_dans_tab("package/".$packagecodename."/generator");
+						$tpl->remplir_template("generatorconf",$tabgeneratorconftpl);
+						
+						//include generator file cour
+						$tpl->remplir_template("chemintpltogenerate",$chemin_db_generator_tpl);
+						
+						//preparedatafortpl
+						$datafortpl=array();
+						if(isset($instanceGenerator))
+							$datafortpl=$instanceGenerator->prepareDataForTpl($instance);
+						
+						foreach($datafortpl as $iddatafortpl=>$contentdatafortpl)
+							$tpl->remplir_template($iddatafortpl,$contentdatafortpl);
+						
+						//generate file with tpl
+						$contentfilecour=$tpl->get_template($this->chemingeneratortpl);
+						
+						$namefilecour=str_replace("__INSTANCE__",$instance->name,$chemin_db_generator_tpl);
+						$namefilecour=substr($namefilecour,0,-4);
+						
+						file_put_contents($namefilecour,$contentfilecour);
+						
+						
+						//load db
+						$sqltoload=file_get_contents($namefilecour);
+						$tabsqltoload=explode(";",$sqltoload);
+						foreach($tabsqltoload as $sqlcour)
 						{
-							//setup annuaire files in package 
-							$this->addToFileIsInPackageFile($packagecodename,$namefilecour);
+							//prepare dump for this sql line (cas drop table)
+							if($dumper)
+							{
+								$tabtabletokill=$this->checkDropTable($sqlcour);
+								foreach($tabtabletokill as $tablecour)
+									$dumper->getTableData($tablecour,false);
+							}
 							
-							//replace original file
-							file_put_contents($namefilecour,$contentfilecour);
+							//exec sql line
+							$req=$this->db->query($sqlcour);
 						}
-						else
+					}
+					
+					//end dump
+					if($dumper)
+					{
+						$dumper->endDump();
+					}
+					
+				}
+				
+				//load db generator
+				$chemin_db_generator_tpl="package/".$packagecodename."/generator/generator.db.deployer.__INSTANCE__.".$sqltype.".tpl";
+				if(isset($this->db) && $this->db && file_exists($chemin_db_generator_tpl))
+				{
+					//pour chaque instance à générer
+					foreach($confgenerator->instance as $instance)
+					{
+						//generate sql
+						$instanceTpl=new Tp($this->conf,$this->log,"backoffice");
+						$tpl=$instanceTpl->tpselected;
+						
+						//include generator conf tpl
+						$tabgeneratorconftpl=$this->loader->charg_generatorconftpl_dans_tab("package/".$packagecodename."/generator");
+						$tpl->remplir_template("generatorconf",$tabgeneratorconftpl);
+						
+						//include generator file cour
+						$tpl->remplir_template("chemintpltogenerate",$chemin_db_generator_tpl);
+						
+						//preparedatafortpl
+						$datafortpl=array();
+						if(isset($instanceGenerator))
+							$datafortpl=$instanceGenerator->prepareDataForTpl($instance);
+						
+						foreach($datafortpl as $iddatafortpl=>$contentdatafortpl)
+							$tpl->remplir_template($iddatafortpl,$contentdatafortpl);
+						
+						//generate file with tpl
+						$contentfilecour=$tpl->get_template($this->chemingeneratortpl);
+						
+						$namefilecour=str_replace("__INSTANCE__",$instance->name,$chemin_db_generator_tpl);
+						$namefilecour=substr($namefilecour,0,-4);
+						$namefilecour=str_replace("package/".$packagecodename."/generator/","core/files/db/".$packagecodename.".",$namefilecour);
+						
+						//conflict resolution "reverse" mode
+						if($this->conflictresolution!=null)
 						{
-							//find existing conflict
-							$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE1___",$namefilecour);
-							if(file_exists($this->conflictfolder."/".$conflictnamefilecour))
+							//only if new file
+							if(!file_exists($namefilecour))
 							{
-								$cptconflict="1";
-								$conflictfilefound="";
-								while(file_exists($this->conflictfolder."/".$conflictnamefilecour))
-								{
-									include $this->conflictfolder."/conflict.php";
-									$tabid=str_replace("/","-----",$conflictnamefilecour);
-									if(isset($tabconflict[$tabid]) && $tabconflict[$tabid]==$packagecodename)
-									{
-										$conflictfilefound=$conflictnamefilecour;
-										break;
-									}
-									
-									$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE".($cptconflict++)."___",$namefilecour);
-								}
-							}
-							
-							//if conflict found
-							if(file_exists($conflictfilefound))
-							{
-								//if conflict exists, replace only conflict file
-								if(!is_dir($this->conflictfolder."/core/files/db"))
-									mkdir($this->conflictfolder."/core/files/db",0777,true);
-								copy($namefilecour,$this->conflictfolder."/".$conflictnamefilecour);
-							}
-							else
-							{
+								//setup annuaire files in package 
+								$this->addToFileIsInPackageFile($packagecodename,$namefilecour);
+								
 								//replace original file
 								file_put_contents($namefilecour,$contentfilecour);
 							}
+							else
+							{
+								//find existing conflict
+								$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE1___",$namefilecour);
+								if(file_exists($this->conflictfolder."/".$conflictnamefilecour))
+								{
+									$cptconflict="1";
+									$conflictfilefound="";
+									while(file_exists($this->conflictfolder."/".$conflictnamefilecour))
+									{
+										include $this->conflictfolder."/conflict.php";
+										$tabid=str_replace("/","-----",$conflictnamefilecour);
+										if(isset($tabconflict[$tabid]) && $tabconflict[$tabid]==$packagecodename)
+										{
+											$conflictfilefound=$conflictnamefilecour;
+											break;
+										}
+										
+										$conflictnamefilecour=str_replace("core/files/db/","core/files/db/___CONFLICTFILE".($cptconflict++)."___",$namefilecour);
+									}
+								}
+								
+								//if conflict found
+								if(file_exists($conflictfilefound))
+								{
+									//if conflict exists, replace only conflict file
+									if(!is_dir($this->conflictfolder."/core/files/db"))
+										mkdir($this->conflictfolder."/core/files/db",0777,true);
+									copy($namefilecour,$this->conflictfolder."/".$conflictnamefilecour);
+								}
+								else
+								{
+									//replace original file
+									file_put_contents($namefilecour,$contentfilecour);
+								}
+							}
+							
+						}
+						else
+						{
+							//file create
+							file_put_contents($namefilecour,$contentfilecour);
 						}
 						
-					}
-					else
-					{
-						//file create
-						file_put_contents($namefilecour,$contentfilecour);
-					}
-					
-					
-					//return tab
-					$tabdeployedfiles[]=$namefilecour;
 						
-					
-					//load db
-					$sqltoload=file_get_contents($namefilecour);
-					$tabsqltoload=explode(";",$sqltoload);
-					foreach($tabsqltoload as $sqlcour)
-					{
-						$req=$this->db->query($sqlcour);
+						//return tab
+						$tabdeployedfiles[]=$namefilecour;
+							
+						
+						//load db
+						$sqltoload=file_get_contents($namefilecour);
+						$tabsqltoload=explode(";",$sqltoload);
+						foreach($tabsqltoload as $sqlcour)
+						{
+							$req=$this->db->query($sqlcour);
+						}
 					}
 				}
+				
+				//recup dump with import
+				$dumper=null;
+				if(class_exists("PratikDump") || (isset($this->includer) && $this->includer->include_pratikclass("Dump")))
+				{
+					$dumpname="dump.".$packagecodename."___generator";
+					$instanceDump=new PratikDump($this->initer,$dumpname);
+					$packagelastdumptoload=$instanceDump->getLastDump($dumpname);
+					
+					if($packagelastdumptoload!="")
+					{
+						//load dump
+						$dumper=$instanceDump->dumpselected;
+						$dumper->importDump($packagelastdumptoload);
+					}
+				}
+				
 			}
-			
-			
 			
 			
 			//load files generator
@@ -1688,6 +1977,28 @@ class PratikPackage extends ClassIniter
 		}
 		
 		return false;
+	}
+	
+	
+	
+	function checkDropTable($sqltoload)
+	{
+		//check an sql line with drop table and get an array with the table names (to use to make dumps)
+		$tabtable=array();
+		
+		$tablelist=strtolower($sqltoload);
+		$tablelist=str_replace(" ","",$tablelist);
+		
+		if(strpos($tablelist,"droptable")!==false)
+		{
+			$tablelist=substr($tablelist,strpos($tablelist,"droptable")+strlen("droptable"));
+			$tablelist=substr($tablelist,strpos($tablelist,"ifexists")+strlen("ifexists"));
+			$tablelist=str_replace("`","",$tablelist);
+			
+			$tabtable=explode(",",$tablelist);
+		}
+		
+		return $tabtable;
 	}
 	
 }
