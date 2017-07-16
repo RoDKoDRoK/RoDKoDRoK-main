@@ -99,6 +99,10 @@ function deployPackage(packagename)
 							//next deploy (order needed for initer construct)
 							var indexcour = tabPackagesToDeployInOrder.indexOf(packagename);
 							indexcour++;
+							
+							if(nbPackagesDeployed>=nbPackagesToDeploy)
+								return;
+							
 							if(isset(tabPackagesToDeployInOrder[indexcour]))
 								deployPackage(tabPackagesToDeployInOrder[indexcour]);
 						}

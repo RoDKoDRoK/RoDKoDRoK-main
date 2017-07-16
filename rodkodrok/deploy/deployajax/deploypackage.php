@@ -17,6 +17,7 @@ $initer=$instanceDeploy->initerConstruct($initer);
 
 //INIT PACKAGER
 $instancePackage=new PratikPackage($initer);
+//echo $instancePackage->showIniter(true); //test to see initer values
 
 //SET CONFLICT MODE
 $instancePackage->setConflictResolution($instanceDeploy->conflictresolution);

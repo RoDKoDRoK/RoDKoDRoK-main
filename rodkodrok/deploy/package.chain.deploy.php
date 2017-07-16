@@ -3,7 +3,13 @@
 //list des packages to deploy dans l'ordre
 $tabpackagetodeploy=array();
 
-//PREMIER PACKAGE CHAIN OBLIGATOIRE PAR DEFAUT POUR TOUT DEPLOIEMENT !!!!!!!!!!!!!!!!!!!!!!
+//PREMIERS PACKAGES OBLIGATOIRES PAR DEFAUT POUR TOUT DEPLOIEMENT !!!!!!!!!!!!!!!!!!!!!!
+//packages src.ark
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="ark.starter";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
 //packages chain.default
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -45,15 +51,20 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.ajax";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
-//packages chain.ws
+//packages chain.xml
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.ws";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.xml";
 
 //packages chain.cron
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron";
+
+//packages chain.virtualtask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.virtualtask";
 
 //packages chain.terminal
 $tabpackagetodeploy[]=array();
@@ -63,34 +74,34 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal";
 
 
 
-//ABSTRACT
-//packages abstract.cron
+//ABSTRACT ONLY
+/*
+//PRATIK STARTER
+//packages abstract.pratik
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.cron";
-
-
-
-
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.pratik";
+*/
 //TASK STARTER
 //packages abstract.task
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.task";
 
-//packages chain.cron.istask
+
+
+
+//CONF ONLY
+//packages conf.wysiwyg
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.istask";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="conf.wysiwyg";
 
-
-
-
-//CONTENT (no main chain)
-//packages connector.content.cron
+//packages arkitect.extension.starter
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.content.cron";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="arkitect.extension.starter";
+
 
 
 
@@ -254,11 +265,23 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.search";
 
 //CONNECTOR
 
-//CONNECTOR SRC
-//packages connector.classloader
+//packages connector.arkitectoutput
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.classloader";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.arkitectoutput";
+
+
+//CONNECTOR SRC
+//packages connector.codeloader (pour les class)
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.codeloader";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages integrate.codeloader.phpclass
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.codeloader.phpclass";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
 
@@ -305,10 +328,15 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.classpath";
 
-//packages chain.ws.classpath
+//packages chain.virtualtask.classpath
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.ws.classpath";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.virtualtask.classpath";
+
+//packages chain.xml.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.xml.classpath";
 
 //packages chain.terminal.classpath
 $tabpackagetodeploy[]=array();
@@ -381,18 +409,6 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.params";
 
 
 
-//EVENT
-//packages rod.eventandtask
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.eventandtask";
-
-//packages connector.event
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.event";
-
-
 
 //USER
 //packages user to integrate before connector.user
@@ -432,12 +448,83 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.token";
 
 
 
-//CONNECTOR LIB
+//CONTENT WITHOUT VISUAL OUPTUT (WHICH EXECUTE CODE ONLY like server.corn or virtual.virtualtask chains...)
+//packages connector.thread.server.cron
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.server.cron";
+
+//packages connector.thread.virtual.virtualtask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.virtual.virtualtask";
+
+//packages connector.thread.server.terminal
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.server.terminal";
+
+//...CONTENT
+
+
+
+
+//SET CHAIN IS TASK (before EVENT)
+//packages chain.cron.istask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.istask";
+
+//packages chain.virtualtask.istask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.virtualtask.istask";
+
+//EVENT
+//packages rod.eventandtask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.eventandtask";
+
+//packages connector.event
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.event";
+
+
+//PACKAGES WITH ACTION ON TABLE EVENTEXECTASK AFTER THAT POINT...
+
+//VIRTUAL TASK FOR CODELOADER FIRST
+//packages thread.virtualtask.loadcodefromthread
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="thread.virtualtask.loadcodefromthread";
+
+
+
+
+//CONNECTOR CHAIN AND CONNECTOR PLUS
 //packages chain and connector management plus
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.chainandconnector";
 
+
+//CODELOADER DB INTEGRATION FOR NEXT CODE LOAD
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.codeloader";
+
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.codeloader.css";
+
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.codeloader.js";
+
+
+//CONNECTOR LIB
 //packages connector.lib
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -494,6 +581,33 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratiklib.case.menu";
 
 
 
+
+//CONTENT MAIN OUTPUT (like index, ajax, ...)
+//packages connector.thread.main.index
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.main.index";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages connector.thread.sub.ajax
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.sub.ajax";
+
+//packages connector.thread.ws.xml
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.ws.xml";
+
+//packages connector.thread.ws.json
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.thread.ws.json";
+
+//...CONTENT
+
+
+
 //USER INTERFACE (and token to kill later ? )
 //packages user and token
 $tabpackagetodeploy[]=array();
@@ -521,22 +635,17 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.tp";
 
 
 //DESIGN
-//packages connector.design
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.design";
-
-//packages design
+//packages design.default
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="design.default";
 
-
-
-//packages connector.js
+//packages thread.virtualtask.loadcodefromdesign
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.js";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="thread.virtualtask.loadcodefromdesign";
+
+
 
 //packages connector.message
 $tabpackagetodeploy[]=array();
@@ -578,12 +687,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.reportmenu";
 
 
 
-//CONTENT
-//packages connector.content
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.content";
-//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+//OTHER CONNECTOR
 
 //packages connector.lang
 $tabpackagetodeploy[]=array();
@@ -685,7 +789,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="design.iconlib.rodkodrok";
 
 
-//packages design.default
+//packages design
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="design.yours";
@@ -713,6 +817,13 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.example";*/
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.tracker";
+
+
+//VIRTUAL TASK FOR CODELOADER LAST
+//packages thread.virtualtask.loadcodefromthreadcontrol
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="thread.virtualtask.loadcodefromthreadcontrol";
 
 
 

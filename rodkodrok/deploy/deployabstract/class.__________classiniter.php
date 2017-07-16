@@ -19,6 +19,15 @@ class ClassIniter
 	}
 	
 	
+	function getIniterPrerequis()
+	{
+		$prerequis=array();
+		
+		return $prerequis;
+	}
+	
+	
+	
 	function getIniter()
 	{
 		return $this->initer;

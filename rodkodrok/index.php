@@ -20,10 +20,72 @@ $chainconnector="none";
 if(isset($_GET['chainconnector']) && $_GET['chainconnector']!="")
 	$chainconnector=$_GET['chainconnector'];
 
+
+//load ark
+$chemin_ark="core/src/ark";
+if(file_exists($chemin_ark."/arkchain.php"))
+	include $chemin_ark."/arkchain.php";
+for($i=1;$i<=20;$i++)
+	if(file_exists($chemin_ark."/arkchain.".$i.".php"))
+		include $chemin_ark."/arkchain.".$i.".php";
+if(isset($arkchain) && count($arkchain)>0)
+{
+	foreach($arkchain as $arkcour)
+	{
+		//prepare data
+		if(isset($arkcour['file']))
+			$arkcour['file']=strtolower($arkcour['file']);
+		else
+			continue;
+		
+		if(isset($arkcour['class']))
+			$arkcour['class']=strtolower($arkcour['class']);
+		else
+			$arkcour['class']=strtolower($arkcour['file']);
+		$arkcour['class']=ucfirst($arkcour['class']);
+		
+		if(!isset($arkcour['loadafterabstract']))
+			$arkcour['loadafterabstract']=false;
+		
+		if(!isset($arkcour['makevar']))
+			$arkcour['makevar']=false;
+		
+		if(isset($arkcour['var']))
+			$arkcour['var']=strtolower($arkcour['var']);
+		else
+			$arkcour['var']=strtolower($arkcour['file']);
+		
+		
+		//load an ark
+		if(file_exists($chemin_ark."/class.".$arkcour['file'].".php"))
+		{
+			if(!$arkcour['loadafterabstract'])
+			{			
+				include_once $chemin_ark."/class.".$arkcour['file'].".php";
+				if($arkcour['makevar'])
+					eval("\$".$arkcour['var']."=new ".$arkcour['class']."();");
+			}
+		}
+		else
+		{
+			//test site to deploy
+			echo "<script>document.location.href='deploy.php';</script>";
+			exit;
+		}
+	}
+}
+else
+{
+	//test site to deploy
+	echo "<script>document.location.href='deploy.php';</script>";
+	exit;
+}
+
+
 //load chain connector
-if(file_exists("chain/connector.chain.".$chainconnector.".php"))
-	include_once "chain/connector.chain.".$chainconnector.".php";
-else if(!file_exists("chain/connector.chain.default.php"))
+if(file_exists($arkitect->get("chain")."/connector.chain.".$chainconnector.".php"))
+	include_once $arkitect->get("chain")."/connector.chain.".$chainconnector.".php";
+else if(!file_exists($arkitect->get("chain")."/connector.chain.default.php"))
 {
 	//test site to deploy
 	echo "<script>document.location.href='deploy.php';</script>";
@@ -31,10 +93,10 @@ else if(!file_exists("chain/connector.chain.default.php"))
 }
 else
 {
-	include_once "chain/connector.chain.default.php";
-	if(isset($firstchain) && file_exists("chain/connector.chain.".$firstchain.".php"))
+	include_once $arkitect->get("chain")."/connector.chain.default.php";
+	if(isset($firstchain) && file_exists($arkitect->get("chain")."/connector.chain.".$firstchain.".php"))
 	{
-		include_once "chain/connector.chain.".$firstchain.".php";
+		include_once $arkitect->get("chain")."/connector.chain.".$firstchain.".php";
 		$chainconnector=$firstchain;
 		//echo $firstchain;
 	}
@@ -44,20 +106,56 @@ else
 
 
 //include classes abstract
-$chemin_classes="core/src/abstract";
-include $chemin_classes."/class.__________load.php";
-$loader=new Load();
+$chemin_classes=$arkitect->get("abstract");
 $tab_class=$loader->charg_dossier_dans_tab($chemin_classes);
 sort($tab_class);
 //print_r($tab_class);
 foreach($tab_class as $class_to_load)
 {
-	if(!strstr($class_to_load,"class.__________load.php"))
-		include $class_to_load;
+	include $class_to_load;
 }
 
+
+//load ark suite after abstract
+if(isset($arkchain) && count($arkchain)>0)
+	foreach($arkchain as $arkcour)
+	{
+		//prepare data
+		if(isset($arkcour['file']))
+			$arkcour['file']=strtolower($arkcour['file']);
+		else
+			continue;
+		
+		if(isset($arkcour['class']))
+			$arkcour['class']=strtolower($arkcour['class']);
+		else
+			$arkcour['class']=strtolower($arkcour['file']);
+		$arkcour['class']=ucfirst($arkcour['class']);
+		
+		if(!isset($arkcour['loadafterabstract']))
+			$arkcour['loadafterabstract']=false;
+			
+		if(!isset($arkcour['makevar']))
+			$arkcour['makevar']=false;
+		
+		if(isset($arkcour['var']))
+			$arkcour['var']=strtolower($arkcour['var']);
+		else
+			$arkcour['var']=strtolower($arkcour['file']);
+		
+		
+		//load an ark
+		if($arkcour['loadafterabstract'] && file_exists($chemin_ark."/class.".$arkcour['file'].".php"))
+		{
+			include_once $chemin_ark."/class.".$arkcour['file'].".php";
+			if($arkcour['makevar'])
+				eval("\$".$arkcour['var']."=new ".$arkcour['class']."();");
+		}
+	}
+
+
 //charge chains dans tab
-$chemin_chain="chain";
+$chemin_chain=$arkitect->get("chain");
 $chaintab=$loader->charg_chain_dans_tab($chemin_chain);
 //print_r($chaintab);
 
@@ -66,8 +164,24 @@ $chaintab=$loader->charg_chain_dans_tab($chemin_chain);
 //init initer
 $initer=array();
 $initer['chainconnector']=$chainconnector;
-$initer['loader']=$loader;
 $initer['chaintab']=$chaintab;
+
+//init initer with ark
+if(isset($arkchain) && count($arkchain)>0)
+	foreach($arkchain as $arkcour)
+	{
+		if(isset($arkcour['var']))
+			$arkcour['var']=strtolower($arkcour['var']);
+		else
+			$arkcour['var']=strtolower($arkcour['file']);
+		
+		if(!isset($arkcour['makevar']))
+			$arkcour['makevar']=false;
+		
+		if($arkcour['makevar'])
+			$initer[$arkcour['var']]=${$arkcour['var']};
+	}
+
 
 //cas appel php from console
 if(isset($argv))
@@ -80,10 +194,10 @@ foreach($tabconnector as $connectorcour)
 	$connectorlowercase=strtolower($connectorcour['name']);
 	$connectorclass=ucfirst($connectorlowercase);
 
-	if(!file_exists("connector/connector.".$connectorlowercase.".php"))
+	if(!file_exists($arkitect->get("connector")."/connector.".$connectorlowercase.".php"))
 		continue;
 	
-	include_once "connector/connector.".$connectorlowercase.".php";
+	include_once $arkitect->get("connector")."/connector.".$connectorlowercase.".php";
 	eval("\$instanceConnector=new Connector".$connectorclass."(\$initer);");
 	
 	eval("\$instanceConnector".$connectorclass."=\$instanceConnector;");
@@ -152,7 +266,7 @@ foreach($tabconnector as $connectorcour)
 	$connectorlowercase=strtolower($connectorcour['name']);
 	$connectorclass=ucfirst($connectorlowercase);
 	
-	if(!file_exists("connector/connector.".$connectorlowercase.".php"))
+	if(!file_exists($arkitect->get("connector")."/connector.".$connectorlowercase.".php"))
 		continue;
 	
 	eval("\$instanceConnector=\$instanceConnector".$connectorclass.";");
@@ -177,7 +291,7 @@ foreach($reversetabconnector as $connectorcour)
 	$connectorlowercase=strtolower($connectorcour['name']);
 	$connectorclass=ucfirst($connectorlowercase);
 	
-	if(!file_exists("connector/connector.".$connectorlowercase.".php"))
+	if(!file_exists($arkitect->get("connector")."/connector.".$connectorlowercase.".php"))
 		continue;
 	
 	eval("\$instanceConnector=\$instanceConnector".$connectorclass.";");

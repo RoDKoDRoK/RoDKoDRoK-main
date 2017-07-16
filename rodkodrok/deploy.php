@@ -8,10 +8,84 @@ ini_set('display_errors', 1);
 
 	
 
+//include ark (from deploy)
+$chemin_ark="deploy/deployark";
+include $chemin_ark."/arkchain.php";
+for($i=1;$i<=20;$i++)
+	if(file_exists($chemin_ark."/arkchain.".$i.".php"))
+		include $chemin_ark."/arkchain.".$i.".php";
+$tabnottoloadagain=array();
+if(isset($arkchain) && count($arkchain)>0)
+	foreach($arkchain as $arkcour)
+	{
+		//prepare data
+		if(isset($arkcour['file']))
+			$arkcour['file']=strtolower($arkcour['file']);
+		else
+			continue;
+		
+		if(!isset($arkcour['loadafterabstract']))
+			$arkcour['loadafterabstract']=false;
+		
+		
+		//load an ark
+		if(file_exists($chemin_ark."/class.".$arkcour['file'].".php"))
+		{
+			if(!$arkcour['loadafterabstract'])
+			{
+				$tabnottoloadagain[]="class.".$arkcour['file'].".php";
+				include_once $chemin_ark."/class.".$arkcour['file'].".php";
+				//eval("\$".$arkcour['var']."=new ".$arkcour['class']."();");
+			}
+		}
+	}
+
+//include ark (from core with new ark class deployed with this deployer)
+$chemin_ark="core/src/ark";
+if(file_exists($chemin_ark."/arkchain.php"))
+{
+	include $chemin_ark."/arkchain.php";
+	for($i=1;$i<=20;$i++)
+		if(file_exists($chemin_ark."/arkchain.".$i.".php"))
+			include $chemin_ark."/arkchain.".$i.".php";
+	if(isset($arkchain) && count($arkchain)>0)
+		foreach($arkchain as $arkcour)
+		{
+			//prepare data
+			if(isset($arkcour['file']))
+				$arkcour['file']=strtolower($arkcour['file']);
+			else
+				continue;
+			
+			if(!isset($arkcour['loadafterabstract']))
+				$arkcour['loadafterabstract']=false;
+			
+			
+			//load an ark
+			if(file_exists($chemin_ark."/class.".$arkcour['file'].".php"))
+			{
+				if(!$arkcour['loadafterabstract'])
+				{
+					//check if ark class is already in deployer
+					$noload=false;
+					foreach($tabnottoloadagain as $nottoload)
+						if("class.".$arkcour['file'].".php"==$nottoload)
+							$noload=true;
+					
+					if($noload)
+						continue;
+					
+					include_once $chemin_ark."/class.".$arkcour['file'].".php";
+					//eval("\$".$arkcour['var']."=new ".$arkcour['class']."();");
+				}
+			}
+		}
+}
+
+
 //include classes abstract (from deploy)
-$chemin_abstract_classes="deploy/deployabstract";
-include $chemin_abstract_classes."/class.__________load.php";
 $loader=new Load();
+$chemin_abstract_classes="deploy/deployabstract";
 $tab_class=$loader->charg_dossier_dans_tab($chemin_abstract_classes);
 sort($tab_class);
 //print_r($tab_class);
@@ -19,8 +93,7 @@ $tabnottoloadagain=array();
 foreach($tab_class as $class_to_load)
 {
 	$tabnottoloadagain[]=substr($class_to_load,strlen($chemin_abstract_classes)+1);
-	if(!strstr($class_to_load,"class.__________load.php"))
-		include_once $class_to_load;
+	include_once $class_to_load;
 }
 
 //include classes abstract (from core with new abstract class deployed with this deployer)
@@ -42,6 +115,75 @@ if($tab_class!=null)
 		
 		include_once $class_to_load;
 	}
+}
+
+
+//include ark after abstract (from deploy)
+$chemin_ark="deploy/deployark";
+include $chemin_ark."/arkchain.php";
+for($i=1;$i<=20;$i++)
+	if(file_exists($chemin_ark."/arkchain.".$i.".php"))
+		include $chemin_ark."/arkchain.".$i.".php";
+$tabnottoloadagain=array();
+if(isset($arkchain) && count($arkchain)>0)
+	foreach($arkchain as $arkcour)
+	{
+		//prepare data
+		if(isset($arkcour['file']))
+			$arkcour['file']=strtolower($arkcour['file']);
+		else
+			continue;
+		
+		if(!isset($arkcour['loadafterabstract']))
+			$arkcour['loadafterabstract']=false;
+		
+		
+		//load an ark
+		if($arkcour['loadafterabstract'] && file_exists($chemin_ark."/class.".$arkcour['file'].".php"))
+		{
+			$tabnottoloadagain[]="class.".$arkcour['file'].".php";
+			include_once $chemin_ark."/class.".$arkcour['file'].".php";
+			//eval("\$".$arkcour['var']."=new ".$arkcour['class']."();");
+		}
+	}
+
+//include ark after abstract (from core with new ark class deployed with this deployer)
+$chemin_ark="core/src/ark";
+if(file_exists($chemin_ark."/arkchain.php"))
+{
+	include $chemin_ark."/arkchain.php";
+	for($i=1;$i<=20;$i++)
+		if(file_exists($chemin_ark."/arkchain.".$i.".php"))
+			include $chemin_ark."/arkchain.".$i.".php";
+	if(isset($arkchain) && count($arkchain)>0)
+		foreach($arkchain as $arkcour)
+		{
+			//prepare data
+			if(isset($arkcour['file']))
+				$arkcour['file']=strtolower($arkcour['file']);
+			else
+				continue;
+			
+			if(!isset($arkcour['loadafterabstract']))
+				$arkcour['loadafterabstract']=false;
+			
+			
+			//load an ark
+			if($arkcour['loadafterabstract'] && file_exists($chemin_ark."/class.".$arkcour['file'].".php"))
+			{
+				//check if ark class is already in deployer
+				$noload=false;
+				foreach($tabnottoloadagain as $nottoload)
+					if("class.".$arkcour['file'].".php"==$nottoload)
+						$noload=true;
+				
+				if($noload)
+					continue;
+				
+				include_once $chemin_ark."/class.".$arkcour['file'].".php";
+				//eval("\$".$arkcour['var']."=new ".$arkcour['class']."();");
+			}
+		}
 }
 
 

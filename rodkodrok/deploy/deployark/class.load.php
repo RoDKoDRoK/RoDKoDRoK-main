@@ -63,12 +63,16 @@ class Load
 	
 	function charg_chain_dans_tab($dossier="chain")
 	{
+		$tab=array();
+		
 		if(!is_dir($dossier))
-			return null;
-			
+		{
+			$tab[]="default";
+			return $tab;
+		}
+				
 		$nameconnectorchain="connector.chain.";
 		
-		$tab=array();
 		$rep=opendir($dossier);
 		
 		while ($file = readdir($rep))
@@ -209,6 +213,7 @@ class Load
 						}
 						else
 						{
+							//cas subtpl
 							$tabchemin=explode(":",$tabcour[2]);
 							if($tabchemin[0]=="subtpl")
 							{
@@ -219,13 +224,11 @@ class Load
 								//construct chemin tpl
 								$chemincour="";
 								
-								$classname=$tabchemin[1];
-								$classname=strtolower($classname);
-								$classname=ucfirst($classname);
+								$arkitectname=$tabchemin[1];
+								$arkitectname.=".tplpath";
 								
-								eval("\$classcour=new Connector".$classname."();");
-								if(isset($classcour->chemintpl))
-									$chemincour=$classcour->chemintpl;
+								$arkitect=new Arkitect();
+								$chemincour=$arkitect->get($arkitectname);
 								
 								$tabtoprint[$tabdest[0]][$tabdest[1]]['chemin']=$chemincour;
 								
