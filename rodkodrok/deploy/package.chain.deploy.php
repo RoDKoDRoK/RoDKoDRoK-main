@@ -56,6 +56,11 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.xml";
 
+//packages chain.json
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.json";
+
 //packages chain.cron
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -459,7 +464,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.token";
 
 
 
-//CONTENT WITHOUT VISUAL OUPTUT (WHICH EXECUTE CODE ONLY like server.corn or virtual.virtualtask chains...)
+//CONTENT WITHOUT VISUAL OUPTUT (WHICH EXECUTE CODE ONLY like server.cron or virtual.virtualtask chains...)
 //packages connector.thread.server.cron
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
