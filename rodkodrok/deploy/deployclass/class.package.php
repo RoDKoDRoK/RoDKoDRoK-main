@@ -938,6 +938,8 @@ class PratikPackage extends ClassIniter
 		$preform['destroyconfirmbutton']=true;
 		$preform['updateconfirmbutton']=true;
 		$preform['totaldestroyconfirmbutton']=true;
+		$preform['reverseconfirmbutton']=true;
+		$preform['localreverseconfirmbutton']=true;
 		
 		$preform['hiddencodename']=true;
 		
