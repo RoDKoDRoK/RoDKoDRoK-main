@@ -54,7 +54,7 @@ class PratikInitersimul extends ClassIniter
 		}
 		
 		//load ark
-		$tab_chemin_ark=array("deploy/deployark","core/src/ark");
+		$tab_chemin_ark=array("deploy/deployark","rkrsystem/src/ark");
 		foreach($tab_chemin_ark as $chemin_ark)
 		{
 			if(!file_exists($chemin_ark."/arkchain.php"))
@@ -105,7 +105,7 @@ class PratikInitersimul extends ClassIniter
 		}
 		
 		//load classes abstract manquantes
-		$tab_chemin_abstract=array("core/src/abstract");
+		$tab_chemin_abstract=array("rkrsystem/src/abstract");
 		foreach($tab_chemin_abstract as $chemin_abstract)
 		{
 			if(!isset($loader) || !$loader)

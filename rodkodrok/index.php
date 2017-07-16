@@ -40,7 +40,7 @@ if(file_exists($chemin_genesis."/genesis.dbfromfile.php"))
 
 
 //load ark
-$chemin_ark="core/src/ark";
+$chemin_ark="rkrsystem/src/ark";
 if(file_exists($chemin_ark."/arkchain.php"))
 	include $chemin_ark."/arkchain.php";
 for($i=1;$i<=20;$i++)

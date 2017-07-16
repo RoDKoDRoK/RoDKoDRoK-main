@@ -154,10 +154,17 @@ class Deploy
 		
 		//check first folder access
 		$tabfoldertocheck=array();
-		$tabfoldertocheck[]="chain";
-		$tabfoldertocheck[]="connector";
 		$tabfoldertocheck[]="core";
 		$tabfoldertocheck[]="package";
+		$tabfoldertocheck[]="rkrsystem";
+		$tabfoldertocheck[]="rkrsystem/chain";
+		$tabfoldertocheck[]="rkrsystem/connector";
+		$tabfoldertocheck[]="rkrsystem/dbfromfile";
+		$tabfoldertocheck[]="rkrsystem/packagetrace";
+		$tabfoldertocheck[]="rkrsystem/src";
+		$tabfoldertocheck[]="rkrsystem/src/abstract";
+		$tabfoldertocheck[]="rkrsystem/src/ark";
+		$tabfoldertocheck[]="rkrsystem/src/genesis";
 		foreach($tabfoldertocheck as $foldertocheck)
 		{
 			if(!file_exists($foldertocheck) && !is_dir($foldertocheck))

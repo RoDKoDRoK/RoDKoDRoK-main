@@ -63,6 +63,13 @@ class Load
 	
 	function charg_chain_dans_tab($dossier="chain")
 	{
+		//check $dossier in arkitect
+		$arkitect=new Arkitect();
+		$tmpdossier=$arkitect->get("chain");
+		if($tmpdossier!="" && is_dir($tmpdossier))
+			$dossier=$tmpdossier;
+		
+		//load chain dans tab
 		$tab=array();
 		
 		if(!is_dir($dossier))
@@ -105,6 +112,13 @@ class Load
 	
 	function charg_connector_dans_tab($dossier="connector")
 	{
+		//check $dossier in arkitect
+		$arkitect=new Arkitect();
+		$tmpdossier=$arkitect->get("connector");
+		if($tmpdossier!="" && is_dir($tmpdossier))
+			$dossier=$tmpdossier;
+		
+		//load chain dans tab
 		if(!is_dir($dossier))
 			return null;
 			

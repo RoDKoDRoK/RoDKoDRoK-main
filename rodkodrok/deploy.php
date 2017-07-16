@@ -41,7 +41,7 @@ if(isset($arkchain) && count($arkchain)>0)
 	}
 
 //include ark (from core with new ark class deployed with this deployer)
-$chemin_ark="core/src/ark";
+$chemin_ark="rkrsystem/src/ark";
 if(file_exists($chemin_ark."/arkchain.php"))
 {
 	include $chemin_ark."/arkchain.php";
@@ -97,7 +97,7 @@ foreach($tab_class as $class_to_load)
 }
 
 //include classes abstract (from core with new abstract class deployed with this deployer)
-$chemin_abstract_classes="core/src/abstract";
+$chemin_abstract_classes="rkrsystem/src/abstract";
 $tab_class=$loader->charg_dossier_dans_tab($chemin_abstract_classes);
 if($tab_class!=null)
 {
@@ -148,7 +148,7 @@ if(isset($arkchain) && count($arkchain)>0)
 	}
 
 //include ark after abstract (from core with new ark class deployed with this deployer)
-$chemin_ark="core/src/ark";
+$chemin_ark="rkrsystem/src/ark";
 if(file_exists($chemin_ark."/arkchain.php"))
 {
 	include $chemin_ark."/arkchain.php";
