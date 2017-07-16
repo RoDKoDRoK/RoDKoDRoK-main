@@ -162,7 +162,7 @@ class Deploy
 		{
 			if(!file_exists($foldertocheck) && !is_dir($foldertocheck))
 				mkdir($foldertocheck,0777,true);
-			chmod($foldertocheck, 0777);
+			//chmod($foldertocheck, 0777);
 		}
 		
 		//deploy des packages du site

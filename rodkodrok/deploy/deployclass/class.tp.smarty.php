@@ -4,7 +4,7 @@ class TemplateSmarty
 {
 	var $oSmarty=null;
 	
-	var $dirtmptpl='core/files/tmp/templates_c';
+	var $dirtmptpl='deploy/deployfiles/tmp/templates_c';
 	
 	function __construct()
 	{
