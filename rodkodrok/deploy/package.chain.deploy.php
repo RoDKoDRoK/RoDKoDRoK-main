@@ -29,10 +29,6 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="files.starter";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
-//packages abstract.task
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.task";
 
 
 
@@ -63,6 +59,29 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron";
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal";
+
+
+
+
+//ABSTRACT
+//packages abstract.cron
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.cron";
+
+
+
+
+//TASK STARTER
+//packages abstract.task
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.task";
+
+//packages chain.cron.istask
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.istask";
 
 
 
@@ -363,7 +382,7 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.params";
 
 
 //EVENT
-//packages rod.eventandtsak
+//packages rod.eventandtask
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.eventandtask";
@@ -544,6 +563,11 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratiklib.menu.leftri
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.adminmenu";
+
+//packages constructmenu
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.constructmenu";
 
 //packages reportmenu
 $tabpackagetodeploy[]=array();
