@@ -1983,7 +1983,7 @@ class PratikPackage extends ClassIniter
 				//search file in deployed files, else kill it
 				if($filetosearch)
 				{
-					if(array_search($fileisinpackage,$tabdeployedfiles)!==false)
+					if(array_search($fileisinpackage,$tabdeployedfiles)===false)
 					{
 						//kill old file
 						if(file_exists($folder_isinpackage.$filename_isinpackage))
