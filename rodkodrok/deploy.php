@@ -8,18 +8,42 @@ ini_set('display_errors', 1);
 
 	
 
-//include classes abstract
-$chemin_abstract_classes="abstract";
-include $chemin_abstract_classes."/class.load.php";
+//include classes abstract (from deploy)
+$chemin_abstract_classes="deploy/deployabstract";
+include $chemin_abstract_classes."/class.__________load.php";
 $loader=new Load();
 $tab_class=$loader->charg_dossier_dans_tab($chemin_abstract_classes);
 sort($tab_class);
 //print_r($tab_class);
+$tabnottoloadagain=array();
 foreach($tab_class as $class_to_load)
 {
-	if(!strstr($class_to_load,"class.load.php"))
-		include $class_to_load;
+	$tabnottoloadagain[]=substr($class_to_load,strlen($chemin_abstract_classes)+1);
+	if(!strstr($class_to_load,"class.__________load.php"))
+		include_once $class_to_load;
 }
+
+//include classes abstract (from core with new abstract class deployed with this deployer)
+$chemin_abstract_classes="core/src/abstract";
+$tab_class=$loader->charg_dossier_dans_tab($chemin_abstract_classes);
+if($tab_class!=null)
+{
+	sort($tab_class);
+	//print_r($tab_class);
+	foreach($tab_class as $class_to_load)
+	{
+		$noload=false;
+		foreach($tabnottoloadagain as $nottoload)
+			if(strstr($class_to_load,$nottoload))
+				$noload=true;
+		
+		if($noload)
+			continue;
+		
+		include_once $class_to_load;
+	}
+}
+
 
 
 //include classes deploy

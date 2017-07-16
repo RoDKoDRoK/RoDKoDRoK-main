@@ -44,15 +44,15 @@ else
 
 
 //include classes abstract
-$chemin_classes="abstract";
-include $chemin_classes."/class.load.php";
+$chemin_classes="core/src/abstract";
+include $chemin_classes."/class.__________load.php";
 $loader=new Load();
 $tab_class=$loader->charg_dossier_dans_tab($chemin_classes);
 sort($tab_class);
 //print_r($tab_class);
 foreach($tab_class as $class_to_load)
 {
-	if(!strstr($class_to_load,"class.load.php"))
+	if(!strstr($class_to_load,"class.__________load.php"))
 		include $class_to_load;
 }
 
@@ -87,8 +87,10 @@ foreach($tabconnector as $connectorcour)
 	eval("\$instanceConnector=new Connector".$connectorclass."(\$initer);");
 	
 	eval("\$instanceConnector".$connectorclass."=\$instanceConnector;");
+	
+	
+	//initinstance
 	eval("\$instance".$connectorclass."=\$instanceConnector->initInstance();");
-	${$connectorlowercase}=$instanceConnector->initVar();
 	
 	//get modif du initer
 	$initer=$instanceConnector->initer;
@@ -96,6 +98,15 @@ foreach($tabconnector as $connectorcour)
 	//cas passage de class dans initer
 	if(isset($connectorcour['classtoiniter']) && $connectorcour['classtoiniter'])
 		eval("\$initer['instance".$connectorclass."']=\$instance".$connectorclass.";");
+	
+	$instanceConnector->reloadIniter($initer);
+	
+	
+	//initvar
+	${$connectorlowercase}=$instanceConnector->initVar();
+	
+	//get modif du initer
+	$initer=$instanceConnector->initer;
 	
 	//cas passage de var dans initer
 	if(isset($connectorcour['vartoiniter']) && $connectorcour['vartoiniter'])

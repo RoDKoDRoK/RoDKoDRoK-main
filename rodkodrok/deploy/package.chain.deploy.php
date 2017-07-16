@@ -16,12 +16,23 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
 
 //PACKAGES BEFORE DB !!!
 
-//FILES
+//STARTER
+//packages abstract.starter
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.starter";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
 //packages files.starter
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="files.starter";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages abstract.task
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="abstract.task";
 
 
 
@@ -56,14 +67,16 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal";
 
 
 
-//INTEGRATE
-//packages tp
+//CONTENT (no main chain)
+//packages connector.content.cron
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.tp.smarty";
-//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.content.cron";
 
 
+
+
+//INTEGRATE
 //packages db
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -102,12 +115,6 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.access.nodroit";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
-
-
-//packages ajax
-$tabpackagetodeploy[]=array();
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.ajax.jquery";
 
 
 //packages formater
@@ -160,6 +167,15 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.filestorage
 
 
 //PRATIK (IMPORTANTS)
+//packages destructor and path
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.destructor";
+
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.path";
+
 //packages form
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
@@ -254,18 +270,38 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="lang.fr_fr";
 
 
 
-//CONNECTOR LIB
-//packages connector.lib
+//CONNECTOR INCLUDER
+//packages chain.index.classpath
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.lib";
-//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.index.classpath";
+
+//packages chain.ajax.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.ajax.classpath";
+
+//packages chain.cron.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.cron.classpath";
+
+//packages chain.ws.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.ws.classpath";
+
+//packages chain.terminal.classpath
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="chain.terminal.classpath";
 
 //packages connector.includer
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.includer";
 //$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
 
 //packages connector.formater
 $tabpackagetodeploy[]=array();
@@ -317,6 +353,28 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.db";
 
 //PACKAGES AFTER DB !!!
 
+
+//PRATIK WITH DB (IMPORTANTS POUR SITE MANAGEMENT ET LA SUITE)
+//package params
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.params";
+
+
+
+//EVENT
+//packages rod.eventandtsak
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.eventandtask";
+
+//packages connector.event
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.event";
+
+
+
 //USER
 //packages user to integrate before connector.user
 $tabpackagetodeploy[]=array();
@@ -355,11 +413,39 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.token";
 
 
 
-//PRATIK WITH DB (IMPORTANTS POUR SITE MANAGEMENT ET LA SUITE)
-//package params
+//CONNECTOR LIB
+//packages chain and connector management plus
 $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
-$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="pratik.params";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.chainandconnector";
+
+//packages connector.lib
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.lib";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+
+
+
+//INTEGRATE WITH LIB
+//packages tp
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.tp.smarty";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
+//packages ajax
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.ajax.jquery";
+
+//packages connector.ajax
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.ajax";
+//$tabpackagetodeploy[count($tabpackagetodeploy)-1]['locked']=true;
+
 
 
 
@@ -459,6 +545,11 @@ $tabpackagetodeploy[]=array();
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.adminmenu";
 
+//packages reportmenu
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.reportmenu";
+
 //...MENUS
 
 
@@ -552,6 +643,16 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.multisite";
 
 
+//packages report
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="integrate.other.highcharts";
+
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.tracker.stats";
+
+
 
 //DESIGNS
 //packages lib icons (available but a lot of files to load, better to load after deployment with the backoffice)
@@ -583,6 +684,11 @@ $tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
 $tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="rod.example";*/
 
 
+
+//END
+$tabpackagetodeploy[]=array();
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['type']="none";
+$tabpackagetodeploy[count($tabpackagetodeploy)-1]['name']="connector.tracker";
 
 
 

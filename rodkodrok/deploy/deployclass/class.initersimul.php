@@ -75,8 +75,10 @@ class PratikInitersimul extends ClassIniter
 			eval("\$instanceConnector=new Connector".$connectorclass."(\$initer);");
 			
 			eval("\$instanceConnector".$connectorclass."=\$instanceConnector;");
+			
+			
+			//initinstance
 			eval("\$instance".$connectorclass."=\$instanceConnector->initInstance();");
-			${$connectorlowercase}=$instanceConnector->initVar();
 			
 			//get modif du initer
 			$initer=$instanceConnector->initer;
@@ -84,6 +86,15 @@ class PratikInitersimul extends ClassIniter
 			//cas passage de class dans initer
 			if(isset($connectorcour['classtoiniter']) && $connectorcour['classtoiniter'])
 				eval("\$initer['instance".$connectorclass."']=\$instance".$connectorclass.";");
+			
+			$instanceConnector->reloadIniter($initer);
+			
+			
+			//initvar
+			${$connectorlowercase}=$instanceConnector->initVar();
+			
+			//get modif du initer
+			$initer=$instanceConnector->initer;
 			
 			//cas passage de var dans initer
 			if(isset($connectorcour['vartoiniter']) && $connectorcour['vartoiniter'])

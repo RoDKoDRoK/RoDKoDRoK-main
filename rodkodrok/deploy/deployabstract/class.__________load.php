@@ -98,6 +98,41 @@ class Load
 	
 	
 	
+	
+	function charg_connector_dans_tab($dossier="connector")
+	{
+		if(!is_dir($dossier))
+			return null;
+			
+		$nameconnector="connector.";
+		
+		$tab=array();
+		$rep=opendir($dossier);
+		
+		while ($file = readdir($rep))
+		{
+			if($file != '..' && $file !='.' && $file !='')
+			{
+				if(is_file($dossier."/".$file))
+				{
+					//chargement du fichier
+					$connectorcour=$file;
+					if(strstr($connectorcour,$nameconnector))
+					{
+						$connectorcour=substr($connectorcour,strlen($nameconnector),-4);
+						//ajout du nom de la chain
+						$tab[]=$connectorcour;
+					}
+				}
+			}
+		}
+		
+		return $tab;
+	}
+	
+	
+	
+	
 	function charg_generatorconftpl_dans_tab($dossier)
 	{
 		if(!is_dir($dossier))
@@ -250,6 +285,27 @@ class Load
 		}
 		
 		return $content;
+	}
+	
+	
+	
+	function load_js($filejs="")
+	{
+		$js="";
+		
+		$js.="<script src=\"".$filejs."\" type=\"text/javascript\"></script>\n";
+		
+		return $js;
+	}
+	
+	
+	function load_css($filecss="")
+	{
+		$css="";
+		
+		$css.="<link rel=\"stylesheet\" type=\"text/css\" href=\"".$filecss."\" />\n";
+		
+		return $css;
 	}
 	
 	
